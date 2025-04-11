@@ -19,7 +19,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded }) => {
         recognitionInstance.stop();
       }
       
-      // @ts-ignore - Browser compatibility
+      // Browser compatibility
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       
