@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -7,12 +6,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from '@/hooks/use-toast';
-
 const EmotionalCheckInReminder = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const firstName = user?.name?.split(' ')[0] || 'there';
-  
   const handleCheckIn = () => {
     navigate('/session');
     toast({
@@ -20,9 +19,7 @@ const EmotionalCheckInReminder = () => {
       description: "+10 points for checking in. Keep up the great work!"
     });
   };
-  
-  return (
-    <Card className="bg-gradient-to-br from-[#F7FAFF] to-[#EEF3FF] border-[#E5E7EB] shadow-lg mb-6">
+  return <Card className="bg-gradient-to-br from-[#F7FAFF] to-[#EEF3FF] border-[#E5E7EB] shadow-lg mb-6">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="relative">
@@ -43,11 +40,7 @@ const EmotionalCheckInReminder = () => {
             </p>
             
             <div className="flex items-center justify-between">
-              <Button 
-                onClick={handleCheckIn}
-                size="sm"
-                className="bg-serenity-500 hover:bg-serenity-600 rounded-full transform transition-all hover:scale-105"
-              >
+              <Button onClick={handleCheckIn} size="sm" className="bg-serenity-500 hover:bg-serenity-600 rounded-full transform transition-all hover:scale-105">
                 Start a Session
               </Button>
               
@@ -57,14 +50,10 @@ const EmotionalCheckInReminder = () => {
               </div>
             </div>
             
-            <p className="text-xs text-muted-foreground mt-3">
-              This session will use voice or chat — whatever feels better today.
-            </p>
+            
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default EmotionalCheckInReminder;
