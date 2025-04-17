@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
-import { Menu, LogIn, UserPlus, LogOut, User, LayoutDashboard, Play, Settings, Sparkles, Award, BookMarked, Bell } from 'lucide-react';
+import { Menu, LogIn, UserPlus, LogOut, User, Settings, Sparkles, Award, BookMarked, Bell } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -36,12 +36,10 @@ const Header = () => {
       
       <div className="hidden md:flex items-center gap-8">
         <nav className="flex items-center gap-6">
-          {isAuthenticated && <button onClick={() => navigate('/home')} className={`flex items-center gap-2 transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
-              <LayoutDashboard className="h-4 w-4" />
+          {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
               Dashboard
             </button>}
-          <button onClick={() => navigate('/chat')} className={`flex items-center gap-2 transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
-            <Play className="h-4 w-4" />
+          <button onClick={() => navigate('/chat')} className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
             Start a Session
           </button>
         </nav>
@@ -119,12 +117,10 @@ const Header = () => {
           </SheetTrigger>
           <SheetContent>
             <div className="flex flex-col gap-6 pt-10">
-              {isAuthenticated && <button onClick={() => navigate('/home')} className={`flex items-center gap-2 transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
-                  <LayoutDashboard className="h-5 w-5" />
+              {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
                   Dashboard
                 </button>}
-              <button onClick={() => navigate('/chat')} className={`flex items-center gap-2 transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
-                <Play className="h-5 w-5" />
+              <button onClick={() => navigate('/chat')} className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
                 Start a Session
               </button>
               
