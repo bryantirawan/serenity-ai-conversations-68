@@ -23,7 +23,7 @@ const EncouragementFeed = () => {
     <Card className="bg-white border-border shadow-sm mb-6">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex items-center gap-2">
-          <MessageCircle className="h-5 w-5 text-sky-500" /> {/* Changed from serenity-500 */}
+          <MessageCircle className="h-5 w-5 text-serenity-500" />
           Sky Insights
         </CardTitle>
       </CardHeader>
@@ -42,4 +42,3 @@ const EncouragementFeed = () => {
 };
 
 export default EncouragementFeed;
-
