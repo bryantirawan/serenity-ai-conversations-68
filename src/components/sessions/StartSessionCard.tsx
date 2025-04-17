@@ -15,7 +15,7 @@ const StartSessionCard = () => {
       
       <div className="flex flex-col gap-3">
         <Button 
-          onClick={() => navigate('/voice')}
+          onClick={() => navigate('/session')}
           size="lg"
           className="rounded-full w-full py-6 text-base bg-skyhug-500 hover:bg-skyhug-600 shadow-md 
                     hover:shadow-xl transition-all hover:scale-[1.02] duration-300"
