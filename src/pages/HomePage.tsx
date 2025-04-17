@@ -28,7 +28,8 @@ import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 import EncouragementFeed from '@/components/therapy/EncouragementFeed';
 import { StreakVault } from '@/components/achievements/StreakVault';
 import EmotionalCheckInReminder from '@/components/reminders/EmotionalCheckInReminder';
-// Removed ClarityGrid import
+import DailyMissions from '@/components/goals/DailyMissions';
+import CalmMeter from '@/components/progress/CalmMeter';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -141,6 +142,8 @@ const HomePage = () => {
           </p>
           
           <EmotionalCheckInReminder />
+          <DailyMissions />
+          <CalmMeter />
           <DailyGoalsCard />
           
           <Card className="glass-panel mb-8 overflow-hidden">
