@@ -22,7 +22,7 @@ const StreakTracker = ({
   if (isStreakBroken) {
     return (
       <Card className="bg-white/80 backdrop-blur-sm border-serenity-100">
-        <CardContent className="pt-6">
+        <CardContent className="pt-6 pb-8"> {/* Added pb-8 for bottom padding */}
           <div className="text-center space-y-4">
             <div className="flex justify-center">
               <div className="bg-amber-50 p-3 rounded-full">
@@ -59,7 +59,7 @@ const StreakTracker = ({
           Streak Tracker
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-8"> {/* Added pb-8 for bottom padding */}
         <div className="space-y-4">
           <div className="text-center">
             <p className="text-lg font-medium mb-1">
