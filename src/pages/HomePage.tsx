@@ -141,8 +141,6 @@ const HomePage = () => {
           
           <EmotionalCheckInReminder />
           <DailyGoalsCard />
-          <EncouragementFeed />
-          <StreakVault />
           
           <Card className="glass-panel mb-8 overflow-hidden">
             <CardHeader className="border-b border-border/10 bg-white/30">
@@ -323,6 +321,11 @@ const HomePage = () => {
               </Card>
             </div>
           </div>
+        </section>
+        
+        <section className="mt-8">
+          <EncouragementFeed />
+          <StreakVault />
         </section>
       </main>
       
