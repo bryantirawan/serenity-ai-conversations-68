@@ -1,12 +1,19 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Message } from '@/context/TherapistContext';
-import { Button } from '@/components/ui/button';
-import { Mic, MicOff, MessageSquare, MessageSquareOff, PhoneOff } from 'lucide-react';
 import ChatBubble from '@/components/chat/ChatBubble';
-import TypingIndicator from '@/components/chat/TypingIndicator';
 import VoiceRecorder from '@/components/voice/VoiceRecorder';
+import TypingIndicator from '@/components/chat/TypingIndicator';
+import SessionSummary from '@/components/session/SessionSummary';
 import AudioWaveAnimation from '@/components/voice/AudioWaveAnimation';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Volume2, 
+  VolumeX, 
+  MessageSquare, 
+  MessageSquareOff,
+  X
+} from 'lucide-react';
 
 interface VoiceCallUIProps {
   messages: Message[];
@@ -30,55 +37,69 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   showTranscript
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [countingDown, setCountingDown] = useState(true);
   const [countdown, setCountdown] = useState(3);
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [sessionTime, setSessionTime] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
+  const [sessionEnded, setSessionEnded] = useState(false);
 
-  // Countdown effect when starting call
   useEffect(() => {
-    if (countingDown) {
-      if (countdown > 0) {
-        const timer = setTimeout(() => {
-          setCountdown(countdown - 1);
-        }, 1000);
-        return () => clearTimeout(timer);
-      } else {
-        setCountingDown(false);
-      }
+    // Start countdown
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && !sessionStarted) {
+      setSessionStarted(true);
     }
-  }, [countdown, countingDown]);
+  }, [countdown, sessionStarted]);
 
-  // Timer effect for call duration
   useEffect(() => {
-    if (!countingDown) {
+    if (sessionStarted && !sessionEnded) {
       const timer = setInterval(() => {
-        setElapsedTime(prev => prev + 1);
+        setSessionTime(prev => prev + 1);
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [countingDown]);
+  }, [sessionStarted, sessionEnded]);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom();
   }, [messages, isProcessing]);
 
-  // Format the elapsed time as MM:SS
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const secs = (seconds % 60).toString().padStart(2, '0');
-    return `${mins}:${secs}`;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (countingDown) {
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleEndCall = () => {
+    setSessionEnded(true);
+    setShowSummary(true);
+  };
+
+  const handleCloseSummary = () => {
+    setShowSummary(false);
+    onEndCall();
+  };
+
+  if (showSummary) {
+    return <SessionSummary onClose={handleCloseSummary} />;
+  }
+
+  if (countdown > 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-skyhug-50 via-sky-100 to-purple-50">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-skyhug-700">
-            Starting session in...
-          </h2>
-          <div className="text-7xl font-bold text-skyhug-500 animate-pulse">
-            {countdown === 0 ? "Let's begin" : countdown}
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-skyhug-50 to-sky-50">
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-skyhug-600 mb-2">Starting session in</h2>
+            <div className="w-32 h-32 rounded-full bg-skyhug-500 flex items-center justify-center text-white text-6xl font-bold mx-auto animate-pulse-slow">
+              {countdown}
+            </div>
+            <p className="mt-4 text-muted-foreground">Get ready to speak with your AI therapist</p>
           </div>
         </div>
       </div>
@@ -86,119 +107,84 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-skyhug-50 via-sky-100 to-purple-50 opacity-80 z-0"></div>
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-[#FDE1D3] to-transparent opacity-30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#E5DEFF] to-transparent opacity-20 rounded-full blur-3xl"></div>
-      
-      {/* Animated background element */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute w-full h-32 bottom-0 left-0 opacity-20">
-          <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path 
-              fill="#3385ff" 
-              fillOpacity="0.5" 
-              d="M0,256L48,240C96,224,192,192,288,181.3C384,171,480,181,576,186.7C672,192,768,192,864,181.3C960,171,1056,149,1152,149.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-              className="animate-[pulse_5s_ease-in-out_infinite]"
-            ></path>
-            <path 
-              fill="#3385ff" 
-              fillOpacity="0.3" 
-              d="M0,256L48,224C96,192,192,128,288,122.7C384,117,480,171,576,176C672,181,768,139,864,144C960,149,1056,203,1152,208C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-              className="animate-[pulse_7s_ease-in-out_infinite]"
-            ></path>
-          </svg>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-skyhug-50 to-sky-50 relative">
+      {/* Top header */}
+      <div className="py-4 px-6 flex justify-between items-center border-b border-skyhug-100">
+        <div>
+          <h1 className="text-xl font-semibold">In Session with Serenity</h1>
+          <p className="text-sm text-muted-foreground">AI Therapist</p>
+        </div>
+        <div className="text-lg font-mono bg-white px-3 py-1 rounded-md shadow-sm">
+          {formatTime(sessionTime)}
         </div>
       </div>
       
-      {/* Top section - Header with title and timer */}
-      <header className="relative z-10 flex items-center justify-between px-6 py-4 bg-white/50 backdrop-blur-md">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-skyhug-100 rounded-full flex items-center justify-center mr-3">
-            <span className="text-skyhug-500 text-lg font-semibold">AI</span>
-          </div>
-          <h1 className="text-xl font-medium">In Session with Skyhug</h1>
-        </div>
-        <div className="px-4 py-1 rounded-full bg-white/80 border border-skyhug-100 text-skyhug-700 font-mono">
-          {formatTime(elapsedTime)}
-        </div>
-      </header>
-
-      {/* Middle section - AI visualization and transcription */}
-      <main className="flex-grow flex flex-col relative z-10 px-4 py-6">
-        <div className="mx-auto mb-6">
+      {/* Main content area */}
+      <div className="flex-grow flex flex-col p-4 md:p-6 relative">
+        {/* Center visualization */}
+        <div className="flex-grow flex flex-col items-center justify-center mb-4">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-skyhug-100 flex items-center justify-center z-10 relative">
-              <span className="text-skyhug-500 text-3xl font-semibold">AI</span>
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-md flex items-center justify-center">
+              <AudioWaveAnimation />
             </div>
-            
-            {/* Pulsing halo effect */}
-            <div className={`absolute inset-0 rounded-full bg-skyhug-300 opacity-20 ${isProcessing ? 'animate-ping' : ''}`}></div>
-            <div className={`absolute -inset-4 rounded-full bg-skyhug-200 opacity-10 ${isProcessing ? 'animate-pulse' : ''}`}></div>
+            <div className="absolute inset-0 rounded-full bg-skyhug-500 opacity-10 animate-pulse-slow"></div>
           </div>
+          {isProcessing && (
+            <div className="mt-6 text-center">
+              <TypingIndicator />
+              <p className="text-sm text-muted-foreground mt-2">Serenity is thinking...</p>
+            </div>
+          )}
         </div>
-
-        {/* Audio wave animation when AI is speaking */}
-        {isProcessing && (
-          <div className="mb-6 flex justify-center">
-            <AudioWaveAnimation />
-          </div>
-        )}
         
-        {/* Transcription section */}
+        {/* Transcript area */}
         {showTranscript && (
-          <div className="flex-grow overflow-y-auto bg-white/50 rounded-xl backdrop-blur-sm p-4 max-h-[40vh] mb-4">
-            <div className="space-y-4">
-              {messages.map((message, index) => (
-                <ChatBubble
-                  key={index}
-                  message={message.content}
-                  isUser={message.isUser}
-                  timestamp={message.timestamp}
-                />
-              ))}
-              {isProcessing && <TypingIndicator />}
-              <div ref={messagesEndRef} />
-            </div>
+          <div className="h-40 md:h-48 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-skyhug-100 p-2 mb-4">
+            <ScrollArea className="h-full">
+              <div className="space-y-3 p-2">
+                {messages.map((message) => (
+                  <ChatBubble
+                    key={message.id}
+                    message={message.content}
+                    isUser={message.isUser}
+                    timestamp={message.timestamp}
+                  />
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
           </div>
         )}
-        
-        {/* Voice recorder component (hidden but functional) */}
-        <div className={showTranscript ? 'hidden' : 'flex-grow'}>
-          <VoiceRecorder onVoiceRecorded={onVoiceRecorded} />
-        </div>
-      </main>
+      </div>
       
       {/* Bottom controls */}
-      <footer className="relative z-10 px-6 py-6 flex items-center justify-between">
-        <Button
-          variant="outline"
-          className="rounded-full h-12 w-12 p-0 bg-white/70"
+      <div className="p-6 flex justify-between items-center">
+        <button
           onClick={onToggleMute}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-md"
         >
-          {isMuted ? <MicOff className="h-5 w-5 text-gray-700" /> : <Mic className="h-5 w-5 text-skyhug-500" />}
-        </Button>
-
-        <Button
-          variant="destructive"
-          size="lg"
-          className="rounded-full h-16 w-16 p-0 bg-red-500 hover:bg-red-600 border-4 border-white/50"
-          onClick={onEndCall}
+          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+        </button>
+        
+        <button
+          onClick={handleEndCall}
+          className="w-16 h-16 flex items-center justify-center rounded-full bg-red-500 shadow-md"
         >
-          <PhoneOff className="h-7 w-7" />
-        </Button>
-
-        <Button
-          variant="outline"
-          className="rounded-full h-12 w-12 p-0 bg-white/70"
+          <X size={24} className="text-white" />
+        </button>
+        
+        <button
           onClick={onToggleTranscript}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-md"
         >
-          {showTranscript ? 
-            <MessageSquare className="h-5 w-5 text-skyhug-500" /> : 
-            <MessageSquareOff className="h-5 w-5 text-gray-700" />}
-        </Button>
-      </footer>
+          {showTranscript ? <MessageSquareOff size={20} /> : <MessageSquare size={20} />}
+        </button>
+      </div>
+      
+      {/* Voice recorder component - hidden but functional */}
+      <div className="hidden">
+        <VoiceRecorder onTranscript={onVoiceRecorded} isDisabled={isMuted} />
+      </div>
     </div>
   );
 };

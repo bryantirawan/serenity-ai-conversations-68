@@ -138,6 +138,14 @@ export default {
 					'50%': { transform: 'scaleY(1)' },
 					'100%': { transform: 'scaleY(0.3)' },
 				},
+				'scale-up': {
+					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' },
+				},
+				'scale-down': {
+					'0%': { transform: 'scale(1)', opacity: '1' },
+					'100%': { transform: 'scale(0.95)', opacity: '0' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -147,6 +155,8 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'float-cloud': 'float-cloud 8s ease-in-out infinite',
 				'wave': 'wave 1.2s ease-in-out infinite',
+				'scale-up': 'scale-up 0.3s ease-out',
+				'scale-down': 'scale-down 0.3s ease-out',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
