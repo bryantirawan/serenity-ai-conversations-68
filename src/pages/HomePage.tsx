@@ -142,8 +142,6 @@ const HomePage = () => {
           </p>
           
           <EmotionalCheckInReminder />
-          <DailyMissions />
-          <CalmMeter />
           <DailyGoalsCard />
           
           <Card className="glass-panel mb-8 overflow-hidden">
@@ -330,6 +328,7 @@ const HomePage = () => {
         <section className="mt-8">
           <EncouragementFeed />
           <StreakVault />
+          <DailyMissions />
         </section>
       </main>
       
