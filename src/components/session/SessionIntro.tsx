@@ -5,6 +5,7 @@ import { Mic, MicOff, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import CloudBackground from '@/components/CloudBackground';
 
 interface SessionIntroProps {
   onStartSession: () => void;
@@ -30,11 +31,13 @@ const SessionIntro: React.FC<SessionIntroProps> = ({ onStartSession }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-white to-[#f8faff]">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      <CloudBackground />
+      
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full bg-white rounded-xl shadow-sm px-6 py-5 space-y-6"
+        className="max-w-md w-full bg-white/90 backdrop-blur-sm rounded-xl shadow-sm px-6 py-5 space-y-6 relative z-10"
       >
         {isStarting ? (
           <div className="text-center space-y-4">
