@@ -13,7 +13,6 @@ import VoicePage from "./pages/VoicePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import NotFound from "./pages/NotFound";
-import SessionSchedulePage from "./pages/SessionSchedulePage";
 import PastSessionsPage from "./pages/PastSessionsPage";
 import SettingsPage from "./pages/SettingsPage";
 import BlogPage from "./pages/BlogPage";
@@ -54,14 +53,6 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <VoicePage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/schedule" 
-                element={
-                  <ProtectedRoute>
-                    <SessionSchedulePage />
                   </ProtectedRoute>
                 } 
               />

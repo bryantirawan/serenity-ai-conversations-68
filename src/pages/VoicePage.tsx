@@ -78,7 +78,7 @@ const VoicePage = () => {
   };
 
   const navigateToSchedule = () => {
-    navigate('/schedule');
+    navigate('/chat');
   };
 
   if (inCall) {
@@ -161,7 +161,7 @@ const VoicePage = () => {
                     className="rounded-full px-6 border-sky-200 hover:bg-sky-50"
                   >
                     <Calendar className="h-5 w-5 mr-2" />
-                    Schedule a Session
+                    Start Chat Session
                   </Button>
                 </div>
                 <p className="mt-6 text-sm text-sky-500 italic">
