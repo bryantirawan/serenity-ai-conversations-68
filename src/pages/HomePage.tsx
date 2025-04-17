@@ -14,6 +14,7 @@ import AchievementsCard from '@/components/achievements/AchievementsCard';
 import StartSessionCard from '@/components/sessions/StartSessionCard';
 import StreakTracker from '@/components/achievements/StreakTracker';
 import FloatingJournalButton from '@/components/journal/FloatingJournalButton';
+import AffirmationCard from '@/components/affirmations/AffirmationCard';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -57,6 +58,7 @@ const HomePage = () => {
         </div>
         
         <section>
+          <AffirmationCard />
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-medium">🧠 Your Mental Health Journey</h2>
           </div>
