@@ -32,17 +32,26 @@ const Header = () => {
   const calmPoints = 720;
 
   return (
-    <header className="w-full py-4 px-4 md:px-8 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-border shadow-sm">
+    <header className="w-full py-4 px-8 md:px-12 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-border shadow-sm font-plus">
       <Logo />
       
-      <div className="hidden md:flex items-center gap-8">
-        <nav className="flex items-center gap-6">
-          {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
+      <div className="hidden md:flex items-center gap-12">
+        <nav className="flex items-center gap-8 tracking-nav">
+          {isAuthenticated && (
+            <button 
+              onClick={() => navigate('/home')} 
+              className={`transition-colors font-medium ${
+                location.pathname === '/home' 
+                  ? 'font-semibold text-[#000000e6] border-b-2 border-skyhug-500' 
+                  : 'text-[#444] hover:text-skyhug-500'
+              }`}
+            >
               Dashboard
-            </button>}
+            </button>
+          )}
           <button 
             onClick={() => navigate('/session')} 
-            className={`transition-colors ${location.pathname === '/session' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
+            className={`transition-colors font-medium text-[#444] hover:text-skyhug-500`}
           >
             Start a Session
           </button>
@@ -51,19 +60,19 @@ const Header = () => {
         {isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-full border-skyhug-200 gap-2">
-                <Avatar className="h-6 w-6">
+              <Button variant="outline" className="rounded-full border-skyhug-200 py-3 px-5">
+                <Avatar className="h-6 w-6 mr-3">
                   <AvatarFallback className="bg-skyhug-100 text-skyhug-500 text-sm">
                     {user?.name?.[0] || 'U'}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-sm font-medium flex items-center gap-2">
-                  {user?.name || 'User'}
-                  <span className="text-skyhug-500 flex items-center gap-1">
-                    <Sparkles className="h-3 w-3" />
-                    {calmPoints}
+                <div className="flex flex-col items-start">
+                  <span className="text-sm text-[#333]">{user?.name || 'User'}</span>
+                  <span className="text-xs text-[#666] flex items-center gap-1.5 mt-0.5">
+                    <Sparkles className="h-3 w-3 text-[#6A6AFF]" />
+                    {calmPoints} Points
                   </span>
-                </span>
+                </div>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -99,12 +108,12 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" className="text-foreground hover:text-skyhug-500 hover:bg-skyhug-50" onClick={() => navigate('/login')}>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" className="text-[#444] hover:text-skyhug-500 hover:bg-skyhug-50 font-medium tracking-nav" onClick={() => navigate('/login')}>
               <LogIn className="mr-2 h-4 w-4" />
               Login
             </Button>
-            <Button variant="default" className="bg-skyhug-500 hover:bg-skyhug-600 text-white rounded-full" onClick={() => navigate('/signup')}>
+            <Button variant="default" className="bg-skyhug-500 hover:bg-skyhug-600 text-white rounded-full font-medium tracking-nav" onClick={() => navigate('/signup')}>
               <UserPlus className="mr-2 h-4 w-4" />
               Sign Up
             </Button>

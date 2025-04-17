@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,12 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'plus': ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+			},
+			letterSpacing: {
+				'nav': '0.25px',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
