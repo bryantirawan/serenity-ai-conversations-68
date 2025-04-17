@@ -27,6 +27,7 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'rec
 import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 import EncouragementFeed from '@/components/therapy/EncouragementFeed';
 import { StreakVault } from '@/components/achievements/StreakVault';
+import { ClarityKit } from '@/components/clarity/ClarityKit';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -137,187 +138,191 @@ const HomePage = () => {
           <p className="text-muted-foreground mb-6">
             Here's a look at how you've been doing — mood, sessions, and clarity over time.
           </p>
-          <DailyGoalsCard />
-          <EncouragementFeed />
-          <StreakVault />
           
-          <Card className="glass-panel mb-8 overflow-hidden">
-            <CardHeader className="border-b border-border/10 bg-white/30">
-              <div className="flex items-center justify-between">
-                <CardTitle>Mood Over Time</CardTitle>
-                <div className="flex items-center gap-2">
-                  <Button 
-                    variant={activeTimeframe === '7days' ? 'default' : 'outline'} 
-                    size="sm" 
-                    className="text-xs h-8 rounded-full"
-                    onClick={() => setActiveTimeframe('7days')}
-                  >
-                    Last 7 days
-                  </Button>
-                  <Button 
-                    variant={activeTimeframe === '30days' ? 'default' : 'outline'} 
-                    size="sm" 
-                    className="text-xs h-8 rounded-full"
-                    onClick={() => setActiveTimeframe('30days')}
-                  >
-                    30 days
-                  </Button>
-                  <Button 
-                    variant={activeTimeframe === 'all' ? 'default' : 'outline'} 
-                    size="sm" 
-                    className="text-xs h-8 rounded-full"
-                    onClick={() => setActiveTimeframe('all')}
-                  >
-                    All time
-                  </Button>
-                </div>
-              </div>
-              <CardDescription>Your emotional journey visualized</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-6 pb-2 h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={moodData}
-                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis 
-                    dataKey="day" 
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                  />
-                  <YAxis 
-                    domain={[0, 5]} 
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                    tickFormatter={(value) => {
-                      const labels = ['', '😔', '😐', '🙂', '😄', '🌟'];
-                      return labels[value] || '';
-                    }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#3b82f6" 
-                    fillOpacity={1}
-                    fill="url(#moodGradient)" 
-                    strokeWidth={3}
-                    activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff' }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              <Card className="glass-panel h-full">
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Session History</CardTitle>
-                    <Button variant="ghost" className="p-0 h-auto" onClick={() => navigate('/sessions')}>
-                      <span className="text-sm text-skyhug-500">View All</span>
-                      <ChevronRight className="h-4 w-4 text-skyhug-500" />
+          <div className="space-y-6">
+            <ClarityKit />
+            <DailyGoalsCard />
+            <EncouragementFeed />
+            <StreakVault />
+            
+            <Card className="glass-panel mb-8 overflow-hidden">
+              <CardHeader className="border-b border-border/10 bg-white/30">
+                <div className="flex items-center justify-between">
+                  <CardTitle>Mood Over Time</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant={activeTimeframe === '7days' ? 'default' : 'outline'} 
+                      size="sm" 
+                      className="text-xs h-8 rounded-full"
+                      onClick={() => setActiveTimeframe('7days')}
+                    >
+                      Last 7 days
+                    </Button>
+                    <Button 
+                      variant={activeTimeframe === '30days' ? 'default' : 'outline'} 
+                      size="sm" 
+                      className="text-xs h-8 rounded-full"
+                      onClick={() => setActiveTimeframe('30days')}
+                    >
+                      30 days
+                    </Button>
+                    <Button 
+                      variant={activeTimeframe === 'all' ? 'default' : 'outline'} 
+                      size="sm" 
+                      className="text-xs h-8 rounded-full"
+                      onClick={() => setActiveTimeframe('all')}
+                    >
+                      All time
                     </Button>
                   </div>
-                  <CardDescription>Your recent conversations and reflections</CardDescription>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="mb-4">
-                    <div className="relative">
-                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <input 
-                        type="text" 
-                        placeholder="Search your past sessions" 
-                        className="w-full pl-10 pr-4 py-2 border-y border-border/20 bg-white/50 focus:outline-none focus:bg-white focus:border-skyhug-200 transition-colors"
-                      />
-                    </div>
-                  </div>
-                  <div className="divide-y divide-border/10">
-                    {sessionHistory.map((session, index) => (
-                      <SessionHistoryItem 
-                        key={index}
-                        day={session.day}
-                        type={session.type}
-                        topic={session.topic}
-                        moodBefore={session.moodBefore}
-                        moodAfter={session.moodAfter}
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+                <CardDescription>Your emotional journey visualized</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6 pb-2 h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={moodData}
+                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis 
+                      dataKey="day" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#64748b', fontSize: 12 }}
+                    />
+                    <YAxis 
+                      domain={[0, 5]} 
+                      tick={{ fill: '#64748b', fontSize: 12 }}
+                      tickFormatter={(value) => {
+                        const labels = ['', '😔', '😐', '🙂', '😄', '🌟'];
+                        return labels[value] || '';
+                      }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#3b82f6" 
+                      fillOpacity={1}
+                      fill="url(#moodGradient)" 
+                      strokeWidth={3}
+                      activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff' }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
             
-            <div>
-              <Card className="glass-panel mb-6">
-                <CardHeader>
-                  <CardTitle>Your Progress</CardTitle>
-                  <CardDescription>Milestones on your journey</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="h-16 w-16 bg-gradient-to-br from-skyhug-200 to-skyhug-400 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-white font-bold text-2xl">3</span>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-medium">🧠 3 Days in a Row!</h3>
-                        <p className="text-sm text-muted-foreground">Keep the streak alive!</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-2">
+                <Card className="glass-panel h-full">
+                  <CardHeader>
+                    <div className="flex justify-between items-center">
+                      <CardTitle>Session History</CardTitle>
+                      <Button variant="ghost" className="p-0 h-auto" onClick={() => navigate('/sessions')}>
+                        <span className="text-sm text-skyhug-500">View All</span>
+                        <ChevronRight className="h-4 w-4 text-skyhug-500" />
+                      </Button>
+                    </div>
+                    <CardDescription>Your recent conversations and reflections</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="mb-4">
+                      <div className="relative">
+                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <input 
+                          type="text" 
+                          placeholder="Search your past sessions" 
+                          className="w-full pl-10 pr-4 py-2 border-y border-border/20 bg-white/50 focus:outline-none focus:bg-white focus:border-skyhug-200 transition-colors"
+                        />
                       </div>
                     </div>
-                    
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {achievements.map((achievement, index) => (
-                        <AchievementBadge 
+                    <div className="divide-y divide-border/10">
+                      {sessionHistory.map((session, index) => (
+                        <SessionHistoryItem 
                           key={index}
-                          title={achievement.title} 
-                          icon={achievement.icon} 
+                          day={session.day}
+                          type={session.type}
+                          topic={session.topic}
+                          moodBefore={session.moodBefore}
+                          moodAfter={session.moodAfter}
                         />
                       ))}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
               
-              <Card className="glass-panel text-center p-6">
-                <h2 className="text-xl font-medium mb-2">Ready for a Session?</h2>
-                <p className="text-skyhug-600 mb-6">Let's talk it out with Serenity.</p>
+              <div>
+                <Card className="glass-panel mb-6">
+                  <CardHeader>
+                    <CardTitle>Your Progress</CardTitle>
+                    <CardDescription>Milestones on your journey</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-4 mb-2">
+                        <div className="h-16 w-16 bg-gradient-to-br from-skyhug-200 to-skyhug-400 rounded-full flex items-center justify-center shadow-lg">
+                          <span className="text-white font-bold text-2xl">3</span>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-medium">🧠 3 Days in a Row!</h3>
+                          <p className="text-sm text-muted-foreground">Keep the streak alive!</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {achievements.map((achievement, index) => (
+                          <AchievementBadge 
+                            key={index}
+                            title={achievement.title} 
+                            icon={achievement.icon} 
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
                 
-                <div className="flex flex-col gap-3">
-                  <Button 
-                    onClick={() => navigate('/voice')}
-                    size="lg"
-                    className="rounded-full w-full py-6 text-base bg-skyhug-500 hover:bg-skyhug-600 shadow-md 
-                              hover:shadow-xl transition-all hover:scale-[1.02] duration-300"
-                  >
-                    <Headphones className="mr-2 h-5 w-5" />
-                    Start Voice Session
-                  </Button>
+                <Card className="glass-panel text-center p-6">
+                  <h2 className="text-xl font-medium mb-2">Ready for a Session?</h2>
+                  <p className="text-skyhug-600 mb-6">Let's talk it out with Serenity.</p>
                   
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="rounded-full w-full border-skyhug-200 hover:bg-skyhug-50"
-                    onClick={() => navigate('/schedule')}
-                  >
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Schedule Session
-                  </Button>
-                </div>
-                
-                <div className="mt-4 text-xs text-muted-foreground">
-                  <span className="text-skyhug-500 font-medium">+10 Calm Points</span> today
-                </div>
-              </Card>
+                  <div className="flex flex-col gap-3">
+                    <Button 
+                      onClick={() => navigate('/voice')}
+                      size="lg"
+                      className="rounded-full w-full py-6 text-base bg-skyhug-500 hover:bg-skyhug-600 shadow-md 
+                              hover:shadow-xl transition-all hover:scale-[1.02] duration-300"
+                    >
+                      <Headphones className="mr-2 h-5 w-5" />
+                      Start Voice Session
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="rounded-full w-full border-skyhug-200 hover:bg-skyhug-50"
+                      onClick={() => navigate('/schedule')}
+                    >
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      Schedule Session
+                    </Button>
+                  </div>
+                  
+                  <div className="mt-4 text-xs text-muted-foreground">
+                    <span className="text-skyhug-500 font-medium">+10 Calm Points</span> today
+                  </div>
+                </Card>
+              </div>
             </div>
           </div>
         </section>
