@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Message } from '@/context/TherapistContext';
 import ChatBubble from '@/components/chat/ChatBubble';
@@ -44,7 +43,6 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   const [sessionEnded, setSessionEnded] = useState(false);
 
   useEffect(() => {
-    // Start countdown
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
@@ -183,7 +181,7 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
       
       {/* Voice recorder component - hidden but functional */}
       <div className="hidden">
-        <VoiceRecorder onTranscript={onVoiceRecorded} isDisabled={isMuted} />
+        <VoiceRecorder onVoiceRecorded={onVoiceRecorded} isDisabled={isMuted} />
       </div>
     </div>
   );
