@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/chat/ChatBubble';
@@ -7,13 +7,27 @@ import VoiceRecorder from '@/components/voice/VoiceRecorder';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import { useTherapist } from '@/context/TherapistContext';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, VolumeX, Volume2 } from 'lucide-react';
-import { useState } from 'react';
+import { 
+  RefreshCw, 
+  VolumeX, 
+  Volume2, 
+  Mic, 
+  MicOff,
+  MessageSquare, 
+  MessageSquareOff
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import VoiceCallUI from '@/components/voice/VoiceCallUI';
 
 const VoicePage = () => {
   const { messages, isProcessing, sendMessage, clearMessages } = useTherapist();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [muted, setMuted] = useState(false);
+  const [inCall, setInCall] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(true);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     scrollToBottom();
@@ -29,7 +43,50 @@ const VoicePage = () => {
 
   const toggleMute = () => {
     setMuted(!muted);
+    toast({
+      title: muted ? "Microphone unmuted" : "Microphone muted",
+      duration: 2000,
+    });
   };
+
+  const toggleTranscript = () => {
+    setShowTranscript(!showTranscript);
+    toast({
+      title: showTranscript ? "Transcript hidden" : "Transcript shown",
+      duration: 2000,
+    });
+  };
+
+  const startCall = () => {
+    setInCall(true);
+    setTimeout(() => {
+      sendMessage("Hello, I'm here to talk whenever you're ready.");
+    }, 4000); // Send initial message after countdown
+  };
+
+  const endCall = () => {
+    toast({
+      title: "Call ended",
+      description: "Your session has been saved",
+      duration: 3000,
+    });
+    setInCall(false);
+  };
+
+  if (inCall) {
+    return (
+      <VoiceCallUI 
+        messages={messages}
+        isProcessing={isProcessing}
+        onVoiceRecorded={handleVoiceRecorded}
+        onEndCall={endCall}
+        onToggleMute={toggleMute}
+        onToggleTranscript={toggleTranscript}
+        isMuted={muted}
+        showTranscript={showTranscript}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -38,9 +95,9 @@ const VoicePage = () => {
       <main className="flex-grow flex flex-col">
         <div className="bg-serenity-50 py-6 px-4 md:px-8 border-b border-border">
           <div className="max-w-5xl mx-auto">
-            <h1 className="text-2xl md:text-3xl font-bold text-center">Voice Therapy with Serenity</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-center">Voice Therapy with Skyhug</h1>
             <p className="text-center text-muted-foreground mt-2">
-              Speak naturally and let Serenity listen to your thoughts and feelings.
+              Speak naturally and let your AI therapist listen to your thoughts and feelings.
             </p>
           </div>
         </div>
@@ -55,8 +112,8 @@ const VoicePage = () => {
                 onClick={toggleMute}
               >
                 {muted ? 
-                  <><VolumeX className="h-4 w-4 mr-2" /> Unmute</> : 
-                  <><Volume2 className="h-4 w-4 mr-2" /> Mute</>
+                  <><MicOff className="h-4 w-4 mr-2" /> Unmute</> : 
+                  <><Mic className="h-4 w-4 mr-2" /> Mute</>
                 }
               </Button>
               <Button 
@@ -70,22 +127,21 @@ const VoicePage = () => {
               </Button>
             </div>
             
-            <div className="flex-grow overflow-y-auto px-4 md:px-8 py-4">
-              <div className="space-y-6">
-                {messages.map((message) => (
-                  <ChatBubble
-                    key={message.id}
-                    message={message.content}
-                    isUser={message.isUser}
-                    timestamp={message.timestamp}
-                  />
-                ))}
-                {isProcessing && <TypingIndicator />}
-                <div ref={messagesEndRef} />
+            <div className="flex-grow flex items-center justify-center">
+              <div className="text-center">
+                <h2 className="text-xl md:text-2xl font-semibold mb-4">Ready to start your voice session?</h2>
+                <p className="text-muted-foreground mb-6">
+                  Your AI therapist is ready to listen and provide support.
+                </p>
+                <Button 
+                  onClick={startCall}
+                  size="lg"
+                  className="rounded-full bg-skyhug-500 hover:bg-skyhug-600 px-8 py-6 text-lg animate-pulse-slow"
+                >
+                  Start Voice Session
+                </Button>
               </div>
             </div>
-            
-            <VoiceRecorder onVoiceRecorded={handleVoiceRecorded} />
           </div>
         </div>
       </main>

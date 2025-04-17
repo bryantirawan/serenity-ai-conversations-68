@@ -80,6 +80,19 @@ export default {
 					900: '#0f172a',
 					950: '#020617',
 				},
+				serenity: {
+					50: '#f0f4ff',
+					100: '#e0e9fd',
+					200: '#c7d7fc',
+					300: '#a4bcf9',
+					400: '#809af4',
+					500: '#6379ed',
+					600: '#4f5ee1',
+					700: '#414bc8',
+					800: '#3540a2',
+					900: '#303b81',
+					950: '#1e224a',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -120,6 +133,11 @@ export default {
 					'50%': { transform: 'translateX(10px)' },
 					'100%': { transform: 'translateX(0)' },
 				},
+				'wave': {
+					'0%': { transform: 'scaleY(0.3)' },
+					'50%': { transform: 'scaleY(1)' },
+					'100%': { transform: 'scaleY(0.3)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -128,6 +146,7 @@ export default {
 				'fade-in': 'fade-in 0.5s ease-in',
 				'float': 'float 6s ease-in-out infinite',
 				'float-cloud': 'float-cloud 8s ease-in-out infinite',
+				'wave': 'wave 1.2s ease-in-out infinite',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
