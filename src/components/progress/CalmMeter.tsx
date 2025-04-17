@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Plant, Cloud, Sparkles } from 'lucide-react';
+import { Flower, Cloud, Sparkles } from 'lucide-react';
 
 interface ProgressItem {
   id: string;
@@ -17,7 +17,7 @@ const CalmMeter = () => {
     {
       id: 'plant',
       title: 'Growth',
-      icon: <Plant className="h-5 w-5 text-green-500" />,
+      icon: <Flower className="h-5 w-5 text-green-500" />,
       progress: 65,
       color: 'bg-green-500',
     },
