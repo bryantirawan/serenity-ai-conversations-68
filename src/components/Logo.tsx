@@ -6,9 +6,8 @@ const Logo = () => {
   return (
     <div className="flex items-center gap-2 cursor-pointer group">
       <div className="relative">
-        {/* Main cloud container with subtle glow */}
         <div 
-          className="relative w-8 h-8 rounded-full bg-gradient-to-br from-[#BDE0FE] to-[#CDB4DB] flex items-center justify-center shadow-md"
+          className="relative w-8 h-8 rounded-full bg-gradient-to-br from-[#ADCFF8] to-[#CDB4DB] flex items-center justify-center shadow-md"
           style={{ boxShadow: '0 0 12px rgba(189, 224, 254, 0.25)' }}
         >
           {/* Soft inner glow */}
@@ -45,7 +44,7 @@ const Logo = () => {
       
       {/* Refined typography */}
       <span 
-        className="font-['Plus_Jakarta_Sans'] font-medium text-xl text-foreground tracking-[0.5px] group-hover:text-[#BDE0FE] transition-colors"
+        className="font-['Plus_Jakarta_Sans'] font-medium text-xl text-foreground tracking-[0.5px] group-hover:text-[#ADCFF8] transition-colors"
       >
         skyhug
       </span>
