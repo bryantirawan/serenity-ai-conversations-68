@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Headphones, Calendar, History, LineChart, Sun } from 'lucide-react';
+import { Headphones, Calendar, History, LineChart } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CloudBackground from '@/components/CloudBackground';
@@ -11,10 +11,10 @@ import CloudBackground from '@/components/CloudBackground';
 const MoodEmoji = ({ emoji, label, selected, onClick }: { emoji: string; label: string; selected: boolean; onClick: () => void }) => (
   <button 
     onClick={onClick}
-    className={`p-2 rounded-full transition-all duration-300 ${selected ? 'bg-skyhug-100 scale-110' : 'hover:bg-white/30'}`}
+    className={`p-3 rounded-full transition-all duration-300 ${selected ? 'bg-skyhug-100 scale-110' : 'hover:bg-white/30'}`}
     aria-label={`Select mood: ${label}`}
   >
-    <span className="text-2xl" role="img" aria-label={label}>{emoji}</span>
+    <span className="text-3xl" role="img" aria-label={label}>{emoji}</span>
   </button>
 );
 
@@ -43,47 +43,48 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col relative overflow-hidden">
       <Header />
       
-      {/* Animated cloud background */}
-      <CloudBackground className="opacity-80" />
+      {/* Enhanced cloud background with softer gradient */}
+      <CloudBackground className="opacity-90" />
       
-      <main className="flex-grow flex items-center justify-center px-4 relative z-10">
-        <div className="max-w-md w-full glass-panel rounded-3xl p-8 md:p-10 text-center">
-          {/* Personal greeting */}
+      <main className="flex-grow flex items-center justify-center px-4 pt-12 relative z-10">
+        <div className="max-w-md w-full glass-panel rounded-3xl p-8 md:p-9 text-center">
+          {/* Personal greeting with lighter font weight */}
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-3 text-foreground flex items-center justify-center gap-2">
+            <h1 className="text-3xl md:text-4xl font-medium mb-3 text-foreground flex items-center justify-center gap-2">
               Hey {firstName} <span className="wave">👋</span>
             </h1>
-            <h2 className="text-xl text-skyhug-600 font-medium">Ready for a reset?</h2>
+            <p className="text-lg text-skyhug-600">You showed up today. Let's take a breath.</p>
           </div>
           
-          {/* Illustration */}
-          <div className="flex justify-center items-center my-6 relative">
+          {/* Illustration with animation */}
+          <div className="flex justify-center items-center my-7 relative">
             <div className="relative w-32 h-32 flex items-center justify-center">
-              <div className="absolute inset-0 bg-skyhug-100 rounded-full opacity-30 animate-pulse-slow"></div>
-              <Headphones className="h-16 w-16 text-skyhug-500" />
+              <div className="absolute inset-0 bg-skyhug-100/60 rounded-full opacity-70 animate-pulse-slow"></div>
+              <Headphones className="h-16 w-16 text-skyhug-500 animate-float" />
             </div>
           </div>
           
-          <p className="text-lg text-muted-foreground mb-6">
+          <p className="text-lg text-muted-foreground mb-7">
             Tap below to begin your personal voice therapy session.
           </p>
           
-          {/* Main CTA Button */}
+          {/* Enhanced CTA Button with pill shape and hover effects */}
           <Button 
             onClick={() => navigate('/voice')}
             size="lg"
-            className="rounded-full w-full py-7 text-lg bg-skyhug-500 hover:bg-skyhug-600 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] duration-300"
+            className="rounded-full w-full py-7 text-lg bg-skyhug-500 hover:bg-skyhug-600 shadow-md 
+                      hover:shadow-xl transition-all hover:scale-[1.02] duration-300"
           >
             <Headphones className="mr-2 h-5 w-5" />
             Start Voice Session
           </Button>
           
-          <p className="text-sm text-muted-foreground mt-4 mb-6 italic">
-            Your AI therapist is here, anytime you need a reset.
+          <p className="text-sm text-muted-foreground mt-5 mb-6 italic">
+            Here to listen, any time you need a moment of clarity.
           </p>
           
-          {/* Scheduled session reminder */}
-          <div className="bg-white/50 rounded-xl p-4 mb-6 shadow-sm border border-skyhug-100">
+          {/* Scheduled session reminder with sleeker design */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-7 shadow-sm border border-skyhug-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 text-skyhug-600 mr-2" />
@@ -95,10 +96,10 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Mood check-in */}
+          {/* Mood check-in with increased spacing */}
           <div className="mt-6">
-            <p className="text-sm font-medium mb-3">How are you feeling right now?</p>
-            <div className="flex justify-center space-x-2">
+            <p className="text-sm font-medium mb-4">Pause. Check in with yourself.</p>
+            <div className="flex justify-between px-2">
               {moods.map((mood, index) => (
                 <MoodEmoji 
                   key={index}
@@ -111,8 +112,8 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Secondary actions */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
+          {/* Secondary actions with refined styling */}
+          <div className="flex flex-col md:flex-row gap-4 justify-center mt-9">
             <Button 
               variant="outline" 
               className="rounded-full border-skyhug-200 hover:bg-skyhug-50"
