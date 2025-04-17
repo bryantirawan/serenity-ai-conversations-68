@@ -5,22 +5,17 @@ const AudioWavePreview = () => {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <div className="absolute w-full max-w-md">
-        {/* Cloud-like background layers */}
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute cloud bg-serenity-50/50 rounded-full"
-            style={{
-              width: `${100 - i * 15}%`,
-              height: `${100 - i * 15}%`,
-              top: '50%',
-              left: '50%',
-              transform: `translate(-50%, -50%) scale(${1 - i * 0.1})`,
-              filter: 'blur(10px)',
-              zIndex: -i
-            }}
-          />
-        ))}
+        {/* Main cloud background */}
+        <div className="absolute w-[120%] h-[120%] bg-white rounded-[50%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg"></div>
+        
+        {/* Cloud bumps */}
+        <div className="absolute w-[40%] h-[40%] bg-white rounded-full -top-[5%] left-[20%] shadow-sm"></div>
+        <div className="absolute w-[45%] h-[45%] bg-white rounded-full -top-[10%] right-[25%] shadow-sm"></div>
+        <div className="absolute w-[30%] h-[30%] bg-white rounded-full -top-[2%] right-[10%] shadow-sm"></div>
+        
+        {/* Soft glow effect */}
+        <div className="absolute w-[140%] h-[140%] bg-serenity-50/30 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-xl -z-10"></div>
+        <div className="absolute w-[160%] h-[160%] bg-serenity-100/20 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-2xl -z-20"></div>
         
         {/* Wave animation */}
         <div className="absolute inset-0 flex items-center justify-center z-10">
