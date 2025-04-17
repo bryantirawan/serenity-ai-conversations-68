@@ -59,14 +59,6 @@ const HomePage = () => {
         </div>
         
         <section>
-          <AffirmationCard />
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-medium">🧠 Your Mental Health Journey</h2>
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Here's a look at how you've been doing — mood, sessions, and clarity over time.
-          </p>
-          
           <EmotionalCheckInReminder />
           <DailyGoalsCard />
           <MoodChart moodData={moodData} />
@@ -89,6 +81,10 @@ const HomePage = () => {
           <EncouragementFeed />
           <StreakVault />
           <DailyMissions />
+        </section>
+
+        <section className="mt-8">
+          <AffirmationCard />
         </section>
       </main>
       
