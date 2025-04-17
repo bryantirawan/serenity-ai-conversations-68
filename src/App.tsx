@@ -15,6 +15,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import NotFound from "./pages/NotFound";
 import SessionSchedulePage from "./pages/SessionSchedulePage";
+import PastSessionsPage from "./pages/PastSessionsPage";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <SessionSchedulePage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/sessions" 
+                element={
+                  <ProtectedRoute>
+                    <PastSessionsPage />
                   </ProtectedRoute>
                 } 
               />

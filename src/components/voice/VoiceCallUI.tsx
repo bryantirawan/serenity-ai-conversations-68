@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Volume2, VolumeX, MessageSquare, MessageSquareOff, Calendar } from 'lucide-react';
+import { Volume2, VolumeX, MessageSquare, MessageSquareOff, Calendar, ClipboardList } from 'lucide-react';
 import ChatBubble from '@/components/chat/ChatBubble';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import { useToast } from '@/hooks/use-toast';
@@ -44,6 +44,10 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   const handleScheduleSession = () => {
     onEndCall();
     navigate('/schedule');
+  };
+
+  const handleViewSessions = () => {
+    navigate('/sessions');
   };
 
   return (
@@ -89,6 +93,14 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
               onClick={onToggleTranscript}
             >
               {showTranscript ? <MessageSquare className="h-5 w-5" /> : <MessageSquareOff className="h-5 w-5" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={handleViewSessions}
+            >
+              <ClipboardList className="h-5 w-5" />
             </Button>
           </div>
           <div className="flex items-center space-x-3">
