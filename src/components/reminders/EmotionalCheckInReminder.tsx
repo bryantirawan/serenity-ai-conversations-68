@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BellRing, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+
 const EmotionalCheckInReminder = () => {
   const navigate = useNavigate();
   const messages = [{
@@ -18,13 +20,15 @@ const EmotionalCheckInReminder = () => {
   }];
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
   const handleCheckIn = () => {
-    navigate('/mood-log');
+    navigate('/voice');
     toast({
       title: "Calm Points Earned! ⭐",
       description: `+${randomMessage.points} points for checking in. Keep up the great work!`
     });
   };
-  return <Card className="bg-white border-border shadow-sm mb-6">
+  
+  return (
+    <Card className="bg-white border-border shadow-sm mb-6">
       <CardContent className="pt-6">
         <div className="flex items-start gap-4">
           <div className="bg-serenity-100 p-2 rounded-full">
@@ -42,6 +46,8 @@ const EmotionalCheckInReminder = () => {
           </div>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export default EmotionalCheckInReminder;
