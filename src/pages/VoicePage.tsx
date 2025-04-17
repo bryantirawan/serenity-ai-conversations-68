@@ -1,10 +1,7 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ChatBubble from '@/components/chat/ChatBubble';
 import VoiceRecorder from '@/components/voice/VoiceRecorder';
-import TypingIndicator from '@/components/chat/TypingIndicator';
 import { useTherapist } from '@/context/TherapistContext';
 import { Button } from '@/components/ui/button';
 import { 
@@ -22,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import VoiceCallUI from '@/components/voice/VoiceCallUI';
 
 const VoicePage = () => {
-  const { messages, isProcessing, sendMessage, clearMessages } = useTherapist();
+  const { messages: therapistMessages, isProcessing, sendMessage, clearMessages } = useTherapist();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [muted, setMuted] = useState(false);
   const [inCall, setInCall] = useState(false);
@@ -30,9 +27,14 @@ const VoicePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const formattedMessages = therapistMessages.map(message => ({
+    text: message.content,
+    isUser: message.isUser
+  }));
+
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isProcessing]);
+  }, [therapistMessages, isProcessing]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -81,7 +83,7 @@ const VoicePage = () => {
   if (inCall) {
     return (
       <VoiceCallUI 
-        messages={messages}
+        messages={formattedMessages}
         isProcessing={isProcessing}
         onVoiceRecorded={handleVoiceRecorded}
         onEndCall={endCall}

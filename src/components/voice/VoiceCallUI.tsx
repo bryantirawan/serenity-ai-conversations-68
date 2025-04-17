@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Mic, MicOff, SendHorizonal, Volume2, VolumeX, MessageSquare, MessageSquareOff, Calendar } from 'lucide-react';
 import ChatBubble from '@/components/chat/ChatBubble';
@@ -6,6 +7,7 @@ import TypingIndicator from '@/components/chat/TypingIndicator';
 import { useTherapist } from '@/context/TherapistContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import VoiceRecorder from '@/components/voice/VoiceRecorder';
 
 interface VoiceCallUIProps {
   messages: { text: string; isUser: boolean }[];
@@ -17,8 +19,6 @@ interface VoiceCallUIProps {
   isMuted: boolean;
   showTranscript: boolean;
 }
-
-import { useNavigate } from 'react-router-dom';
 
 const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   messages,
@@ -62,7 +62,7 @@ const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
         <div className="max-w-3xl mx-auto flex-grow flex flex-col p-4">
           <div className="space-y-4 flex-grow overflow-y-auto">
             {messages.map((message, index) => (
-              <ChatBubble key={index} text={message.text} isUser={message.isUser} />
+              <ChatBubble key={index} content={message.text} isUser={message.isUser} />
             ))}
             {isProcessing && <TypingIndicator />}
             <div ref={messagesEndRef} />
