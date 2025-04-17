@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -7,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from '@/hooks/use-toast';
-
 const EmotionalCheckInReminder = () => {
   const navigate = useNavigate();
   const {
@@ -42,7 +40,7 @@ const EmotionalCheckInReminder = () => {
             </p>
             
             <div className="flex items-center justify-between">
-              <Button onClick={handleCheckIn} size="sm" className="bg-serenity-500 hover:bg-serenity-600 rounded-full transform transition-all hover:scale-105">
+              <Button onClick={handleCheckIn} size="sm" className="bg-serenity-500 hover:bg-serenity-600 transform transition-all hover:scale-105 rounded">
                 Start a Session
               </Button>
               
@@ -59,4 +57,3 @@ const EmotionalCheckInReminder = () => {
     </Card>;
 };
 export default EmotionalCheckInReminder;
-
