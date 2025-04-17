@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTherapist } from '@/context/TherapistContext';
@@ -37,11 +36,6 @@ const SessionRoom = () => {
 
   const handleToggleMode = () => {
     setIsVoiceMode(!isVoiceMode);
-    toast({
-      title: isVoiceMode ? "Switched to chat mode" : "Switched to voice mode",
-      description: isVoiceMode ? "You can now type your messages" : "You can now speak your messages",
-      duration: 2000,
-    });
   };
 
   return (
