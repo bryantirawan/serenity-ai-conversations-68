@@ -2,9 +2,9 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
-import { Menu, LogIn, UserPlus, LogOut, User } from 'lucide-react';
+import { Menu, LogIn, UserPlus, LogOut, User, Home } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();
   const { toast } = useToast();
 
@@ -36,19 +37,27 @@ const Header = () => {
         <nav className="flex items-center gap-6">
           <button 
             onClick={() => navigate('/')}
-            className="text-foreground hover:text-skyhug-500 transition-colors"
+            className={`transition-colors ${location.pathname === '/' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
           >
-            Home
+            Landing
           </button>
+          {isAuthenticated && (
+            <button 
+              onClick={() => navigate('/home')}
+              className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
+            >
+              Home
+            </button>
+          )}
           <button 
             onClick={() => navigate('/chat')}
-            className="text-foreground hover:text-skyhug-500 transition-colors"
+            className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
           >
             Chat
           </button>
           <button 
             onClick={() => navigate('/voice')}
-            className="text-foreground hover:text-skyhug-500 transition-colors"
+            className={`transition-colors ${location.pathname === '/voice' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
           >
             Voice
           </button>
@@ -68,6 +77,10 @@ const Header = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
+                <Home className="mr-2 h-4 w-4" />
+                <span>Home</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
@@ -107,19 +120,27 @@ const Header = () => {
             <div className="flex flex-col gap-6 pt-10">
               <button 
                 onClick={() => navigate('/')}
-                className="text-foreground hover:text-skyhug-500 transition-colors text-lg py-2"
+                className={`transition-colors ${location.pathname === '/' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}
               >
-                Home
+                Landing
               </button>
+              {isAuthenticated && (
+                <button 
+                  onClick={() => navigate('/home')}
+                  className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}
+                >
+                  Home
+                </button>
+              )}
               <button 
                 onClick={() => navigate('/chat')}
-                className="text-foreground hover:text-skyhug-500 transition-colors text-lg py-2"
+                className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}
               >
                 Chat
               </button>
               <button 
                 onClick={() => navigate('/voice')}
-                className="text-foreground hover:text-skyhug-500 transition-colors text-lg py-2"
+                className={`transition-colors ${location.pathname === '/voice' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}
               >
                 Voice
               </button>
@@ -140,6 +161,14 @@ const Header = () => {
                       <p className="text-muted-foreground text-xs">{user?.email}</p>
                     </div>
                   </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start mb-2"
+                    onClick={() => navigate('/home')}
+                  >
+                    <Home className="mr-2 h-4 w-4" />
+                    Home
+                  </Button>
                   <Button 
                     variant="outline" 
                     className="w-full justify-start"

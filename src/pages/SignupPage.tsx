@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,7 +44,7 @@ const SignupPage = () => {
         title: 'Account created',
         description: 'Welcome to Serenity! Your account has been created.',
       });
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       toast({
         title: 'Signup failed',

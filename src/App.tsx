@@ -8,6 +8,7 @@ import { TherapistProvider } from "@/context/TherapistContext";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import HomePage from "./pages/HomePage";
 import ChatPage from "./pages/ChatPage";
 import VoicePage from "./pages/VoicePage";
 import LoginPage from "./pages/LoginPage";
@@ -28,6 +29,14 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route 
+                path="/home" 
+                element={
+                  <ProtectedRoute>
+                    <HomePage />
+                  </ProtectedRoute>
+                } 
+              />
               <Route 
                 path="/chat" 
                 element={
