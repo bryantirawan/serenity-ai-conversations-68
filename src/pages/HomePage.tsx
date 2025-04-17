@@ -27,6 +27,7 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'rec
 import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 import EncouragementFeed from '@/components/therapy/EncouragementFeed';
 import { StreakVault } from '@/components/achievements/StreakVault';
+import EmotionalCheckInReminder from '@/components/reminders/EmotionalCheckInReminder';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -137,6 +138,8 @@ const HomePage = () => {
           <p className="text-muted-foreground mb-6">
             Here's a look at how you've been doing — mood, sessions, and clarity over time.
           </p>
+          
+          <EmotionalCheckInReminder />
           <DailyGoalsCard />
           <EncouragementFeed />
           <StreakVault />
