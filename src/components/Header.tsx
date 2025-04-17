@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
-import { Menu, LogIn, UserPlus, LogOut, User, Home, Settings } from 'lucide-react';
+import { Menu, LogIn, UserPlus, LogOut, User, Home, Settings, Sparkles, Award, BookMarked, Bell } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,9 +17,7 @@ const Header = () => {
     logout,
     isAuthenticated
   } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
 
   const handleLogout = () => {
     logout();
@@ -29,13 +28,14 @@ const Header = () => {
     navigate('/');
   };
 
+  const calmPoints = 720;
+
   return (
     <header className="w-full py-4 px-4 md:px-8 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-border shadow-sm">
       <Logo />
       
       <div className="hidden md:flex items-center gap-8">
         <nav className="flex items-center gap-6">
-          
           {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
               Home
             </button>}
@@ -45,34 +45,60 @@ const Header = () => {
           <button onClick={() => navigate('/voice')} className={`transition-colors ${location.pathname === '/voice' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
             Voice
           </button>
-          
         </nav>
         
-        {isAuthenticated ? <DropdownMenu>
+        {isAuthenticated ? (
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="rounded-full border-skyhug-200 gap-2">
-                <User className="h-4 w-4" />
-                {user?.name || 'User'}
+                <Avatar className="h-6 w-6">
+                  <AvatarFallback className="bg-skyhug-100 text-skyhug-500 text-sm">
+                    {user?.name?.[0] || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm font-medium flex items-center gap-2">
+                  {user?.name || 'User'}
+                  <span className="text-skyhug-500 flex items-center gap-1">
+                    <Sparkles className="h-3 w-3" />
+                    {calmPoints}
+                  </span>
+                </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
-                <Home className="mr-2 h-4 w-4" />
-                <span>Home</span>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem onClick={() => navigate('/profile')} className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>View Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/sessions')} className="cursor-pointer">
-                <span>Session History</span>
+              <DropdownMenuItem className="cursor-pointer">
+                <Sparkles className="mr-2 h-4 w-4" />
+                <span>{calmPoints} Calm Points</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Award className="mr-2 h-4 w-4" />
+                <span>Earned Badges</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <BookMarked className="mr-2 h-4 w-4" />
+                <span>My Calm Kit</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                <Bell className="mr-2 h-4 w-4" />
+                <span>Notifications</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu> : <div className="flex items-center gap-3">
+          </DropdownMenu>
+        ) : (
+          <div className="flex items-center gap-3">
             <Button variant="ghost" className="text-foreground hover:text-skyhug-500 hover:bg-skyhug-50" onClick={() => navigate('/login')}>
               <LogIn className="mr-2 h-4 w-4" />
               Login
@@ -81,7 +107,8 @@ const Header = () => {
               <UserPlus className="mr-2 h-4 w-4" />
               Sign Up
             </Button>
-          </div>}
+          </div>
+        )}
       </div>
 
       <div className="md:hidden">
