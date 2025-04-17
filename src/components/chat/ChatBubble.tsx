@@ -19,7 +19,11 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isUser, timestamp }) =
         </Avatar>
       )}
       <div className="flex flex-col">
-        <div className={isUser ? "chat-bubble-user" : "chat-bubble-ai"}>
+        <div className={cn(
+          isUser 
+            ? "chat-bubble-user" 
+            : "chat-bubble-ai animate-scale-up"
+        )}>
           <p className="whitespace-pre-wrap">{message}</p>
         </div>
         {timestamp && (

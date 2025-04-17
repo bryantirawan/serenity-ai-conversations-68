@@ -8,15 +8,30 @@ interface CloudBackgroundProps {
 const CloudBackground: React.FC<CloudBackgroundProps> = ({ className = '' }) => {
   return (
     <div className={`absolute inset-0 overflow-hidden z-0 ${className}`}>
-      {/* Main background gradient - soft blue to lavender/peach */}
-      <div className="absolute inset-0 bg-gradient-to-br from-skyhug-100 via-skyhug-50 to-white"></div>
+      {/* Main background gradient - soft lavender to white */}
+      <div className="absolute inset-0 bg-gradient-to-br from-serenity-100 via-serenity-50 to-white"></div>
       
       {/* Soft accent gradients */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-[#FDE1D3] to-transparent opacity-40 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#E5DEFF] to-transparent opacity-30 rounded-full blur-3xl"></div>
       
-      {/* Sun peeking through clouds */}
-      <div className="absolute top-[15%] right-[15%] w-24 h-24 bg-yellow-100 rounded-full opacity-60 blur-md"></div>
+      {/* Light particles floating */}
+      <div className="particles-container absolute inset-0">
+        {[...Array(12)].map((_, i) => (
+          <div 
+            key={i}
+            className="absolute rounded-full bg-white opacity-60 animate-float"
+            style={{
+              width: `${Math.random() * 8 + 4}px`,
+              height: `${Math.random() * 8 + 4}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDuration: `${Math.random() * 10 + 10}s`,
+              animationDelay: `${Math.random() * 5}s`
+            }}
+          ></div>
+        ))}
+      </div>
       
       {/* Decorative clouds */}
       <div className="cloud w-32 h-20 top-[10%] left-[5%] animate-float-cloud" 

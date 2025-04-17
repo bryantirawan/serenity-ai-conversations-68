@@ -74,10 +74,10 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded, isDisabl
   };
 
   return (
-    <div className="p-4 bg-white/50 backdrop-blur-sm border-t border-border">
+    <div className="p-4 bg-white/50 backdrop-blur-sm border-t border-serenity-100">
       <div className="flex flex-col items-center gap-4">
         {transcript && (
-          <div className="w-full p-3 bg-white rounded-lg border border-input text-left">
+          <div className="w-full p-3 bg-white/80 rounded-xl border border-serenity-100 text-left shadow-sm">
             {transcript}
           </div>
         )}
@@ -87,19 +87,23 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded, isDisabl
             type="button"
             variant={isRecording ? "destructive" : "default"}
             size="lg"
-            className={`rounded-full ${isRecording ? "" : "bg-serenity-500 hover:bg-serenity-600"}`}
+            className={`rounded-full shadow-md transition-all duration-300 hover:scale-105 ${
+              isRecording 
+                ? "bg-pink-500 hover:bg-pink-600" 
+                : "bg-serenity-500 hover:bg-serenity-600"
+            }`}
             onClick={isRecording ? stopRecording : startRecording}
             disabled={isDisabled}
           >
             {isRecording ? <MicOff className="h-5 w-5 mr-2" /> : <Mic className="h-5 w-5 mr-2" />}
-            {isRecording ? "Stop Recording" : "Start Recording"}
+            {isRecording ? "Stop Recording" : "I'm Ready to Talk"}
           </Button>
           
           {transcript && (
             <Button
               type="button"
               size="icon"
-              className="rounded-full bg-serenity-500 hover:bg-serenity-600"
+              className="rounded-full shadow-md bg-serenity-500 hover:bg-serenity-600 transition-all duration-300 hover:scale-105"
               onClick={sendVoice}
               disabled={isDisabled}
             >
@@ -109,12 +113,17 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded, isDisabl
         </div>
         
         {isRecording && (
-          <div className="audio-wave mt-2">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+          <div className="flex justify-center space-x-1 mt-2">
+            {[...Array(5)].map((_, i) => (
+              <div 
+                key={i} 
+                className="w-2 h-2 rounded-full bg-serenity-400 animate-pulse" 
+                style={{ 
+                  animationDelay: `${i * 0.15}s`,
+                  animationDuration: '1s'
+                }}
+              ></div>
+            ))}
           </div>
         )}
       </div>
