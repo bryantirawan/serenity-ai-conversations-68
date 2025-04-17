@@ -1,11 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Sparkles, ArrowLeft } from 'lucide-react';
+import { Mic, MicOff, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import CloudBackground from '@/components/CloudBackground';
-import { useNavigate } from 'react-router-dom';
 
 interface SessionIntroProps {
   onStartSession: () => void;
@@ -15,7 +15,6 @@ const SessionIntro: React.FC<SessionIntroProps> = ({ onStartSession }) => {
   const [countdown, setCountdown] = useState(3);
   const [isMicEnabled, setIsMicEnabled] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isStarting && countdown > 0) {
@@ -31,10 +30,6 @@ const SessionIntro: React.FC<SessionIntroProps> = ({ onStartSession }) => {
     onStartSession();
   };
 
-  const handleGoBack = () => {
-    navigate('/home');
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       <CloudBackground />
@@ -44,15 +39,6 @@ const SessionIntro: React.FC<SessionIntroProps> = ({ onStartSession }) => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full bg-white/90 backdrop-blur-sm rounded-xl shadow-sm px-6 py-5 space-y-6 relative z-10"
       >
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="absolute top-4 left-4 text-gray-600 hover:text-gray-900"
-          onClick={handleGoBack}
-        >
-          <ArrowLeft className="h-6 w-6" />
-        </Button>
-
         {isStarting ? (
           <div className="text-center space-y-4">
             <div className="text-4xl font-semibold text-gray-900 mb-4">
