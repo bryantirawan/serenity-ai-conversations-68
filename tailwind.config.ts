@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -93,6 +92,19 @@ export default {
 					900: '#303b81',
 					950: '#1e224a',
 				},
+				mood: {
+					happy: '#FFE29F',
+					meh: '#94A3B8',
+					low: '#C7D7FC',
+					anxious: '#86EFAC',
+					overwhelmed: '#FDA4AF'
+				},
+				emotion: {
+					joy: '#FEF9C3',
+					reflection: '#E0E9FD',
+					clarity: '#F0FDF4',
+					calm: '#F1F5F9'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -162,6 +174,9 @@ export default {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'therapy-gradient': 'linear-gradient(to right, #2563eb, #3b82f6, #60a5fa)',
 				'blue-sky': 'linear-gradient(180deg, #2563eb 0%, #60a5fa 100%)',
+				'mood-happy': 'linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%)',
+				'mood-gradient': 'linear-gradient(to right, #ee9ca7, #ffdde1)',
+				'lavender-peach': 'linear-gradient(to right, #E0E9FD, #FDE1D3)',
 			},
 		}
 	},
