@@ -15,6 +15,7 @@ import StartSessionCard from '@/components/sessions/StartSessionCard';
 import StreakTracker from '@/components/achievements/StreakTracker';
 import FloatingJournalButton from '@/components/journal/FloatingJournalButton';
 import AffirmationCard from '@/components/affirmations/AffirmationCard';
+import ProfileStatsCard from '@/components/profile/ProfileStatsCard';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -71,14 +72,13 @@ const HomePage = () => {
           <MoodChart moodData={moodData} />
           <StreakTracker currentStreak={3} longestStreak={7} />
           
-
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
               <SessionHistoryCard sessionHistory={sessionHistory} />
             </div>
             
             <div>
+              <ProfileStatsCard />
               <AchievementsCard />
               <StartSessionCard />
             </div>
