@@ -13,6 +13,7 @@ import SessionHistoryCard from '@/components/sessions/SessionHistoryCard';
 import AchievementsCard from '@/components/achievements/AchievementsCard';
 import StartSessionCard from '@/components/sessions/StartSessionCard';
 import StreakTracker from '@/components/achievements/StreakTracker';
+import FloatingJournalButton from '@/components/journal/FloatingJournalButton';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -43,6 +44,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
       <Header />
+      <FloatingJournalButton />
       
       <CloudBackground className="opacity-90" />
       
