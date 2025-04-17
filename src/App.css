@@ -1,8 +1,10 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
+  font-family: 'Inter', sans-serif;
 }
 
 .logo {
@@ -12,10 +14,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em rgba(37, 99, 235, 0.8));
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em rgba(97, 218, 251, 0.8));
 }
 
 @keyframes logo-spin {
@@ -35,8 +37,58 @@
 
 .card {
   padding: 2em;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 .read-the-docs {
   color: #888;
+}
+
+/* Custom animations */
+.hover-float {
+  transition: transform 0.3s ease;
+}
+
+.hover-float:hover {
+  transform: translateY(-8px);
+}
+
+/* Soft UI elements */
+.soft-shadow {
+  box-shadow: 
+    5px 5px 15px rgba(0, 0, 0, 0.05),
+    -5px -5px 15px rgba(255, 255, 255, 0.6);
+}
+
+/* Theme colors */
+.bg-blush {
+  background-color: #fce7f3;
+}
+
+.text-blush {
+  color: #db2777;
+}
+
+.bg-lavender {
+  background-color: #ede9fe;
+}
+
+.text-lavender {
+  color: #7c3aed;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  border-radius: 1rem;
 }
