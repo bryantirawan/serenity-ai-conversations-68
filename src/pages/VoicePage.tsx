@@ -14,7 +14,8 @@ import {
   Mic, 
   MicOff,
   MessageSquare, 
-  MessageSquareOff
+  MessageSquareOff,
+  Calendar
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -71,6 +72,10 @@ const VoicePage = () => {
       duration: 3000,
     });
     setInCall(false);
+  };
+
+  const navigateToSchedule = () => {
+    navigate('/schedule');
   };
 
   if (inCall) {
@@ -133,13 +138,25 @@ const VoicePage = () => {
                 <p className="text-muted-foreground mb-6">
                   Your AI therapist is ready to listen and provide support.
                 </p>
-                <Button 
-                  onClick={startCall}
-                  size="lg"
-                  className="rounded-full bg-skyhug-500 hover:bg-skyhug-600 px-8 py-6 text-lg animate-pulse-slow"
-                >
-                  Start Voice Session
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button 
+                    onClick={startCall}
+                    size="lg"
+                    className="rounded-full bg-skyhug-500 hover:bg-skyhug-600 px-8 py-6 text-lg animate-pulse-slow"
+                  >
+                    Start Voice Session
+                  </Button>
+                  
+                  <Button
+                    onClick={navigateToSchedule}
+                    variant="outline"
+                    size="lg"
+                    className="rounded-full px-6"
+                  >
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Schedule a Session
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
