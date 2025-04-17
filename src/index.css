@@ -5,35 +5,35 @@
 
 @layer base {
   :root {
-    --background: 260 30% 98%;
-    --foreground: 240 10% 20%;
+    --background: 210 50% 98%;
+    --foreground: 220 20% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 20%;
+    --card-foreground: 220 20% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 20%;
+    --popover-foreground: 220 20% 20%;
 
-    --primary: 255 80% 60%;
+    --primary: 222 84% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 260 20% 96%;
-    --secondary-foreground: 240 10% 20%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 220 20% 20%;
 
-    --muted: 260 20% 96%;
-    --muted-foreground: 240 5% 50%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 260 20% 96%;
-    --accent-foreground: 240 10% 20%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 220 20% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 260 15% 90%;
-    --input: 260 15% 90%;
-    --ring: 255 80% 60%;
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 222 84% 53%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
   }
 }
 
@@ -53,7 +53,7 @@
 }
 
 .chat-bubble-user {
-  @apply bg-serenity-500 text-white rounded-2xl rounded-tr-none px-4 py-2 max-w-[85%] break-words;
+  @apply bg-skyhug-500 text-white rounded-2xl rounded-tr-none px-4 py-2 max-w-[85%] break-words;
 }
 
 .chat-bubble-ai {
@@ -64,8 +64,8 @@
   @apply backdrop-blur-sm bg-white/80 border border-white/20 shadow-lg;
 }
 
-.serenity-card {
-  @apply bg-white border border-serenity-100 rounded-xl shadow-md hover:shadow-lg transition-shadow;
+.skyhug-card {
+  @apply bg-white border border-skyhug-100 rounded-xl shadow-md hover:shadow-lg transition-shadow;
 }
 
 .wavy-border {
@@ -79,7 +79,7 @@
   left: 0;
   right: 0;
   height: 8px;
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='8' viewBox='0 0 100 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 4C12.5 0 12.5 8 25 4C37.5 0 37.5 8 50 4C62.5 0 62.5 8 75 4C87.5 0 87.5 8 100 4V8H0V4Z' fill='%238b7af9' /%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='8' viewBox='0 0 100 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 4C12.5 0 12.5 8 25 4C37.5 0 37.5 8 50 4C62.5 0 62.5 8 75 4C87.5 0 87.5 8 100 4V8H0V4Z' fill='%232563eb' /%3E%3C/svg%3E");
   background-size: 100px 8px;
   background-repeat: repeat-x;
 }
@@ -96,7 +96,7 @@
   width: 8px;
   height: 8px;
   margin-right: 3px;
-  background-color: #8b7af9;
+  background-color: #2563eb;
   border-radius: 50%;
 }
 
@@ -128,7 +128,7 @@
   width: 4px;
   height: 25px;
   margin: 0 2px;
-  background-color: #8b7af9;
+  background-color: #2563eb;
   border-radius: 2px;
   animation: audio-wave 1.2s infinite ease-in-out;
 }
@@ -142,4 +142,30 @@
 @keyframes audio-wave {
   0%, 40%, 100% { transform: scaleY(0.4); }
   20% { transform: scaleY(1); }
+}
+
+/* Cloud animation */
+.cloud {
+  @apply absolute bg-white rounded-full opacity-90;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.cloud:before,
+.cloud:after {
+  content: '';
+  @apply absolute bg-white rounded-full;
+}
+
+.cloud:before {
+  width: 50%;
+  height: 50%;
+  top: -30%;
+  left: 25%;
+}
+
+.cloud:after {
+  width: 60%;
+  height: 60%;
+  top: -40%;
+  right: 20%;
 }
