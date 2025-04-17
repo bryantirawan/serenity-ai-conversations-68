@@ -5,14 +5,17 @@ import { Mic, MicOff, SendHorizonal } from 'lucide-react';
 
 type VoiceRecorderProps = {
   onVoiceRecorded: (transcript: string) => void;
+  isDisabled?: boolean;
 };
 
-const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded }) => {
+const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded, isDisabled = false }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [recognitionInstance, setRecognitionInstance] = useState<SpeechRecognition | null>(null);
 
   const startRecording = () => {
+    if (isDisabled) return;
+    
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       // Ensure previous instance is cleaned up
       if (recognitionInstance) {
@@ -86,6 +89,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded }) => {
             size="lg"
             className={`rounded-full ${isRecording ? "" : "bg-serenity-500 hover:bg-serenity-600"}`}
             onClick={isRecording ? stopRecording : startRecording}
+            disabled={isDisabled}
           >
             {isRecording ? <MicOff className="h-5 w-5 mr-2" /> : <Mic className="h-5 w-5 mr-2" />}
             {isRecording ? "Stop Recording" : "Start Recording"}
@@ -97,6 +101,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onVoiceRecorded }) => {
               size="icon"
               className="rounded-full bg-serenity-500 hover:bg-serenity-600"
               onClick={sendVoice}
+              disabled={isDisabled}
             >
               <SendHorizonal className="h-5 w-5" />
             </Button>
