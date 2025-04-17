@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -27,19 +28,19 @@ const HeroSection = () => {
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-br from-serenity-600 to-serenity-800 bg-clip-text text-transparent">
-              Talk to an AI Therapist That Understands Your Skies
+          <div className="space-y-8">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 leading-[1.1]">
+              Talk to an AI Therapist That Understands You
             </h1>
-            <p className="text-2xl font-light text-serenity-600">
+            <p className="text-xl md:text-2xl text-slate-600 leading-relaxed max-w-2xl">
               Skyhug adapts to your emotional weather — sunshine, storm, or still. Talk or speak with your AI therapist anytime you need support.
             </p>
           </div>
           
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-6 pt-4">
             <Button 
               onClick={() => navigate('/voice')} 
-              className="bg-serenity-500 hover:bg-serenity-600 text-white rounded-full px-8 group transition-all duration-300 hover:scale-105" 
+              className="bg-serenity-500 hover:bg-serenity-600 text-white rounded-full px-8 py-6 group transition-all duration-300 hover:scale-105 text-lg font-medium" 
               size="lg"
             >
               Try Voice Therapy 
@@ -48,14 +49,14 @@ const HeroSection = () => {
             <Button 
               onClick={() => navigate('/chat')} 
               variant="outline" 
-              className="rounded-full border-serenity-200 text-foreground hover:bg-serenity-50 px-8" 
+              className="rounded-full border-serenity-200 text-foreground hover:bg-serenity-50 px-8 py-6 text-lg font-medium" 
               size="lg"
             >
               Start Chatting <MessageSquareText className="ml-2 h-5 w-5" />
             </Button>
           </div>
 
-          <p className="text-sm text-muted-foreground">
+          <p className="text-base text-slate-500 font-medium">
             Free to try. No sign-up required.
           </p>
 
