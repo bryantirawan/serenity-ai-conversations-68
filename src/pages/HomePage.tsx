@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -25,13 +24,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 
-// Get user's first name helper
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
 };
 
-// Badge component for achievements
 const AchievementBadge = ({ title, icon }: { title: string; icon: React.ReactNode }) => (
   <div className="flex items-center gap-2 bg-white/80 rounded-full px-3 py-1.5 shadow-sm">
     {icon}
@@ -39,7 +37,6 @@ const AchievementBadge = ({ title, icon }: { title: string; icon: React.ReactNod
   </div>
 );
 
-// Session history item component
 const SessionHistoryItem = ({ 
   day, 
   type, 
@@ -77,10 +74,8 @@ const HomePage = () => {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
   const [activeTimeframe, setActiveTimeframe] = useState('7days');
   
-  // Get user's first name for personalized greeting
   const firstName = getFirstName(user?.name);
 
-  // Mock mood history data for the past 7 days
   const moodData = [
     { day: 'Mon', value: 2, mood: '😐', note: 'Feeling neutral' },
     { day: 'Tue', value: 3, mood: '🙂', note: 'Slightly better today' },
@@ -91,14 +86,12 @@ const HomePage = () => {
     { day: 'Sun', value: 5, mood: '🌟', note: 'Excellent day' },
   ];
 
-  // Mock session history
   const sessionHistory = [
     { day: 'Monday', type: 'Voice Session with Serenity', topic: 'anxiety before presentation', moodBefore: '😐', moodAfter: '🙂' },
     { day: 'Thursday', type: 'Reflection Journal', topic: 'social burnout', moodBefore: '😔', moodAfter: '😐' },
     { day: 'Saturday', type: 'Voice Session with Serenity', topic: 'weekend planning', moodBefore: '🙂', moodAfter: '😄' },
   ];
 
-  // Achievements earned
   const achievements = [
     { title: 'First Voice Session', icon: <Award className="h-4 w-4 text-amber-500" /> },
     { title: '5 Mood Logs', icon: <Star className="h-4 w-4 text-violet-500" /> },
@@ -125,11 +118,9 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col relative overflow-hidden">
       <Header />
       
-      {/* Enhanced cloud background with softer gradient */}
       <CloudBackground className="opacity-90" />
       
       <main className="flex-grow px-4 pt-20 pb-8 relative z-10 max-w-5xl mx-auto w-full flex flex-col gap-8">
-        {/* Personal greeting with lighter font weight */}
         <div className="text-center mb-4">
           <h1 className="text-3xl md:text-4xl font-medium mb-2 text-foreground">
             Hi {firstName} <span className="wave">👋</span> Here's your mind check-in for today
@@ -137,7 +128,6 @@ const HomePage = () => {
           <p className="text-lg text-skyhug-600">Small steps make big shifts. Let's take one together.</p>
         </div>
         
-        {/* Mental Health Journey Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-medium">🧠 Your Mental Health Journey</h2>
@@ -145,11 +135,8 @@ const HomePage = () => {
           <p className="text-muted-foreground mb-6">
             Here's a look at how you've been doing — mood, sessions, and clarity over time.
           </p>
-          <div className="text-center text-sm text-muted-foreground bg-sky-50/50 py-3 px-4 rounded-lg mb-8 border border-skyhug-100/50">
-            There's no perfect streak. Just honest reflection. We're proud of you for being here.
-          </div>
+          <DailyGoalsCard />
           
-          {/* Mood Over Time Section */}
           <Card className="glass-panel mb-8 overflow-hidden">
             <CardHeader className="border-b border-border/10 bg-white/30">
               <div className="flex items-center justify-between">
@@ -226,7 +213,6 @@ const HomePage = () => {
             </CardContent>
           </Card>
           
-          {/* Session History Timeline */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
               <Card className="glass-panel h-full">
@@ -267,7 +253,6 @@ const HomePage = () => {
               </Card>
             </div>
             
-            {/* Milestone Badges */}
             <div>
               <Card className="glass-panel mb-6">
                 <CardHeader>
@@ -299,7 +284,6 @@ const HomePage = () => {
                 </CardContent>
               </Card>
               
-              {/* Call to Action */}
               <Card className="glass-panel text-center p-6">
                 <h2 className="text-xl font-medium mb-2">Ready for a Session?</h2>
                 <p className="text-skyhug-600 mb-6">Let's talk it out with Serenity.</p>
