@@ -19,9 +19,6 @@ export default {
 			}
 		},
 		extend: {
-			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -96,32 +93,6 @@ export default {
 					900: '#303b81',
 					950: '#1e224a',
 				},
-				lavender: {
-					50: '#f5f3ff',
-					100: '#ede9fe',
-					200: '#ddd6fe',
-					300: '#c4b5fd',
-					400: '#a78bfa',
-					500: '#8b5cf6',
-					600: '#7c3aed',
-					700: '#6d28d9',
-					800: '#5b21b6',
-					900: '#4c1d95',
-					950: '#2e1065',
-				},
-				blush: {
-					50: '#fdf2f8',
-					100: '#fce7f3',
-					200: '#fbcfe8',
-					300: '#f9a8d4',
-					400: '#f472b6',
-					500: '#ec4899',
-					600: '#db2777',
-					700: '#be185d',
-					800: '#9d174d',
-					900: '#831843',
-					950: '#500724',
-				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -175,20 +146,6 @@ export default {
 					'0%': { transform: 'scale(1)', opacity: '1' },
 					'100%': { transform: 'scale(0.95)', opacity: '0' },
 				},
-				'drift-x': {
-					'0%': { transform: 'translateX(0)' },
-					'50%': { transform: 'translateX(20px)' },
-					'100%': { transform: 'translateX(0)' },
-				},
-				'drift-y': {
-					'0%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(10px)' },
-					'100%': { transform: 'translateY(0)' },
-				},
-				'pulse-wave': {
-					'0%, 100%': { transform: 'scaleY(0.3)' },
-					'50%': { transform: 'scaleY(1)' },
-				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -200,21 +157,11 @@ export default {
 				'wave': 'wave 1.2s ease-in-out infinite',
 				'scale-up': 'scale-up 0.3s ease-out',
 				'scale-down': 'scale-down 0.3s ease-out',
-				'drift-x': 'drift-x 15s ease-in-out infinite',
-				'drift-y': 'drift-y 12s ease-in-out infinite',
-				'pulse-wave': 'pulse-wave 1.5s ease-in-out infinite',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'therapy-gradient': 'linear-gradient(to right, #2563eb, #3b82f6, #60a5fa)',
 				'blue-sky': 'linear-gradient(180deg, #2563eb 0%, #60a5fa 100%)',
-				'lavender-blush': 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
-				'soft-gradient': 'linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)',
-			},
-			boxShadow: {
-				'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-				'elevation': '0 10px 30px -5px rgba(0, 0, 0, 0.1)',
-				'card': '0 2px 10px rgba(0, 0, 0, 0.08)',
 			},
 		}
 	},

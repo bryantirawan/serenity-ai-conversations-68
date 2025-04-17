@@ -35,13 +35,15 @@
 
     --radius: 0.75rem;
   }
+}
 
+@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground antialiased min-h-screen font-sans;
+    @apply bg-background text-foreground antialiased min-h-screen;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
@@ -59,7 +61,7 @@
 }
 
 .glass-panel {
-  @apply backdrop-blur-sm bg-white/80 border border-white/20 shadow-lg rounded-xl;
+  @apply backdrop-blur-sm bg-white/80 border border-white/20 shadow-lg;
 }
 
 .skyhug-card {
@@ -183,39 +185,3 @@
   animation: wave 1.2s infinite ease-in-out;
 }
 
-/* Mood Indicators */
-.mood-indicator {
-  @apply transition-all duration-300 rounded-full flex items-center justify-center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.mood-indicator:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-/* Enhanced card styles */
-.airy-card {
-  @apply bg-white rounded-xl border border-cloud-100 shadow-soft transition-all duration-300;
-}
-
-.airy-card:hover {
-  @apply shadow-elevation transform -translate-y-1;
-}
-
-/* Smooth animation for UI elements */
-.smooth-appear {
-  @apply transition-all duration-500 opacity-0;
-  transform: translateY(20px);
-}
-
-.smooth-appear.visible {
-  @apply opacity-100;
-  transform: translateY(0);
-}
-
-/* Enhanced cloud background */
-.enhanced-cloud {
-  @apply absolute rounded-full opacity-70 blur-xl;
-  background: linear-gradient(180deg, rgba(137, 180, 250, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-}
