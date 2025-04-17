@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
-import { Menu, LogIn, UserPlus, LogOut, User, Settings, Sparkles, Award, BookMarked, Bell } from 'lucide-react';
+import { Menu, LogIn, UserPlus, LogOut, User, Settings, Sparkles, Award, BookMarked, Bell, LayoutDashboard } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
