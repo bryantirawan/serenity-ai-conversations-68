@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/Header';
@@ -13,6 +12,7 @@ import MoodChart from '@/components/progress/MoodChart';
 import SessionHistoryCard from '@/components/sessions/SessionHistoryCard';
 import AchievementsCard from '@/components/achievements/AchievementsCard';
 import StartSessionCard from '@/components/sessions/StartSessionCard';
+import StreakTracker from '@/components/achievements/StreakTracker';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -64,6 +64,7 @@ const HomePage = () => {
           
           <EmotionalCheckInReminder />
           <DailyGoalsCard />
+          <StreakTracker currentStreak={3} longestStreak={7} />
           
           <MoodChart moodData={moodData} />
           
