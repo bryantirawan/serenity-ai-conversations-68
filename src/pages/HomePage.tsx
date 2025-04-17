@@ -26,6 +26,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 import EncouragementFeed from '@/components/therapy/EncouragementFeed';
+import { StreakVault } from '@/components/achievements/StreakVault';
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
@@ -138,6 +139,7 @@ const HomePage = () => {
           </p>
           <DailyGoalsCard />
           <EncouragementFeed />
+          <StreakVault />
           
           <Card className="glass-panel mb-8 overflow-hidden">
             <CardHeader className="border-b border-border/10 bg-white/30">
