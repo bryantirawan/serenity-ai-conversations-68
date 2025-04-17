@@ -19,16 +19,19 @@ const AffirmationCard = () => {
   const index = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % affirmations.length;
   
   return (
-    <Card className="bg-gradient-to-br from-skyhug-50 to-white border-skyhug-100 mb-6">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Sparkles className="h-5 w-5 text-skyhug-500" />
+    <Card className="bg-white/40 backdrop-blur-md border-blue-100 shadow-md mb-6 max-w-xl mx-auto transition-all hover:shadow-lg">
+      <CardHeader className="pb-2 px-6 pt-4">
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold text-gray-500 tracking-wide uppercase">
+          <Sparkles className="h-4 w-4 animate-pulse-slow text-blue-400" />
           Affirmation of the Day
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="text-lg font-medium text-skyhug-700 leading-relaxed">
-          {affirmations[index]}
+      <CardContent className="px-6 pb-4">
+        <p className="text-xl md:text-2xl font-medium text-gray-800 italic leading-relaxed text-center">
+          "{affirmations[index]}"
+        </p>
+        <p className="text-sm text-gray-400 italic mt-4 text-center">
+          Take a moment to let these words sink in
         </p>
       </CardContent>
     </Card>
