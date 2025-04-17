@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquareText, Mic, ArrowRight } from 'lucide-react';
+import { MessageSquareText, ArrowRight } from 'lucide-react';
 import AudioWavePreview from './AudioWavePreview';
 import TrustMarkers from './TrustMarkers';
 
@@ -15,11 +15,12 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Your Personal AI Therapist
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground">
+              Here for Every Kind of Sky
             </h1>
             <p className="text-2xl font-light text-serenity-600">
-              Voice-based AI therapy you can trust. Open up, feel better, anytime.
+              Voice-based AI therapy that adapts to your emotional landscape. 
+              Open up, feel better, anytime.
             </p>
           </div>
           
