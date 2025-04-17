@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
-import { Menu, LogIn, UserPlus, LogOut, User, Home } from 'lucide-react';
+import { Menu, LogIn, UserPlus, LogOut, User, Home, Settings } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -80,6 +80,13 @@ const Header = () => {
               <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
                 <Home className="mr-2 h-4 w-4" />
                 <span>Home</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/sessions')} className="cursor-pointer">
+                <span>Session History</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
@@ -168,6 +175,21 @@ const Header = () => {
                   >
                     <Home className="mr-2 h-4 w-4" />
                     Home
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start mb-2"
+                    onClick={() => navigate('/sessions')}
+                  >
+                    Session History
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start mb-2"
+                    onClick={() => navigate('/settings')}
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
                   </Button>
                   <Button 
                     variant="outline" 
