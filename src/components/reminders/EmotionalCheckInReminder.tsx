@@ -34,7 +34,7 @@ const EmotionalCheckInReminder = () => {
   };
 
   return (
-    <Card className="bg-gradient-to-r from-serenity-50 to-white border-serenity-100 shadow-lg mb-6">
+    <Card className="bg-white border-border shadow-sm mb-6">
       <CardContent className="pt-6">
         <div className="flex items-start gap-4">
           <div className="bg-serenity-100 p-2 rounded-full">
