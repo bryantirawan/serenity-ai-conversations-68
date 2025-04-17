@@ -1,15 +1,13 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/landing/HeroSection';
+import SupportOptions from '@/components/landing/SupportOptions';
+import MoodTrackingPreview from '@/components/landing/MoodTrackingPreview';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
-import { MessageSquareText, Mic, Brain, Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { MessageSquareText, Brain, Heart, ArrowRight } from 'lucide-react';
 
 const Index = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -17,6 +15,20 @@ const Index = () => {
       <main className="flex-grow">
         <HeroSection />
         
+        {/* Mood Tracking Preview */}
+        <section className="py-32 px-4 md:px-8 bg-gradient-to-b from-serenity-50/50 to-white">
+          <div className="max-w-7xl mx-auto text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6">Track Your Skies Over Time</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              See your mood shift, your sessions grow, and your mental clarity deepen — all in one visual timeline.
+            </p>
+          </div>
+          <MoodTrackingPreview />
+        </section>
+
+        {/* Support Options */}
+        <SupportOptions />
+
         {/* Features Section */}
         <section className="py-32 px-4 md:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
@@ -119,16 +131,16 @@ const Index = () => {
         {/* Final CTA */}
         <section className="py-32 px-4 md:px-8 bg-serenity-500 text-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Start your journey to clarity</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Start your journey to clarity — one skyhug at a time</h2>
             <p className="text-xl mb-12 opacity-90">
-              Serenity is free to try, no account required. Just say hi.
+              Free to try, no account required. Just say hi.
             </p>
             <Button 
-              onClick={() => navigate('/voice')}
               size="lg"
               className="rounded-full px-8 bg-white text-serenity-600 hover:bg-serenity-50 group"
+              onClick={() => window.location.href = '/voice'}
             >
-              Get Started <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              Begin Now <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </section>
