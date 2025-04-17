@@ -40,7 +40,10 @@ const Header = () => {
           {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
               Dashboard
             </button>}
-          <button onClick={() => navigate('/chat')} className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
+          <button 
+            onClick={() => navigate('/session')} 
+            className={`transition-colors ${location.pathname === '/session' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
+          >
             Start a Session
           </button>
         </nav>
@@ -121,7 +124,10 @@ const Header = () => {
               {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
                   Dashboard
                 </button>}
-              <button onClick={() => navigate('/chat')} className={`transition-colors ${location.pathname === '/chat' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}>
+              <button 
+                onClick={() => navigate('/session')} 
+                className={`transition-colors ${location.pathname === '/session' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'} text-lg py-2`}
+              >
                 Start a Session
               </button>
               
