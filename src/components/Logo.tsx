@@ -8,7 +8,9 @@ const Logo = () => {
       <div className="relative">
         <div 
           className="relative w-8 h-8 rounded-full bg-gradient-to-br from-[#ADCFF8] to-[#CDB4DB] flex items-center justify-center shadow-md"
-          style={{ boxShadow: '0 0 12px rgba(189, 224, 254, 0.25)' }}
+          style={{ 
+            boxShadow: '0 0 12px rgba(189, 224, 254, 0.25), 0 4px 10px rgba(180, 170, 255, 0.3)' 
+          }}
         >
           {/* Soft inner glow */}
           <div className="absolute inset-1 bg-white/20 rounded-full blur-sm"></div>
