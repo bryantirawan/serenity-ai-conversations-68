@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -13,11 +12,17 @@ const HeroSection = () => {
     <section className="relative py-32 px-4 md:px-8 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-radial from-serenity-50 to-background -z-10" />
       
-      {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-serenity-100 rounded-full blur-3xl opacity-20 animate-pulse-slow" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-serenity-200 rounded-full blur-3xl opacity-20 animate-pulse-slow" 
-             style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-serenity-100 rounded-full blur-3xl opacity-20 animate-pulse-slow cloud-shape" 
+             style={{
+               borderRadius: '60% 40% 70% 30% / 40% 50% 60% 50%',
+               animationDelay: '0.5s'
+             }} />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-serenity-200 rounded-full blur-3xl opacity-20 animate-pulse-slow cloud-shape" 
+             style={{
+               borderRadius: '50% 60% 40% 70% / 60% 40% 50% 30%',
+               animationDelay: '1s'
+             }} />
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -70,7 +75,7 @@ const HeroSection = () => {
           </div>
 
           <div className="absolute top-1/4 left-10 md:left-20 animate-float">
-            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
+            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs cloud-bubble">
               <p className="text-lg text-serenity-600">Take your time — I'm here.</p>
             </div>
           </div>
@@ -79,7 +84,7 @@ const HeroSection = () => {
             className="absolute bottom-1/4 right-10 md:right-20 animate-float" 
             style={{ animationDelay: '1s' }}
           >
-            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
+            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs cloud-bubble">
               <p className="text-lg text-serenity-600">Let's talk about it together.</p>
             </div>
           </div>
