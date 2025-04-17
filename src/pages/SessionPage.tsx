@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTherapist } from '@/context/TherapistContext';
 import SessionIntro from '@/components/session/SessionIntro';
 import SessionRoom from '@/components/session/SessionRoom';
+import Header from '@/components/Header';
 
 const SessionPage = () => {
   const [isSessionStarted, setIsSessionStarted] = useState(false);
@@ -19,12 +20,15 @@ const SessionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-sky-50">
-      {!isSessionStarted ? (
-        <SessionIntro onStartSession={handleStartSession} />
-      ) : (
-        <SessionRoom />
-      )}
+    <div>
+      <Header />
+      <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-white to-sky-50">
+        {!isSessionStarted ? (
+          <SessionIntro onStartSession={handleStartSession} />
+        ) : (
+          <SessionRoom />
+        )}
+      </div>
     </div>
   );
 };
