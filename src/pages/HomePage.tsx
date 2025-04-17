@@ -28,7 +28,7 @@ import DailyGoalsCard from '@/components/goals/DailyGoalsCard';
 import EncouragementFeed from '@/components/therapy/EncouragementFeed';
 import { StreakVault } from '@/components/achievements/StreakVault';
 import EmotionalCheckInReminder from '@/components/reminders/EmotionalCheckInReminder';
-import ClarityGrid from '@/components/clarity/ClarityGrid';
+// Removed ClarityGrid import
 
 const getFirstName = (fullName: string | undefined) => {
   return fullName?.split(' ')[0] || 'Friend';
