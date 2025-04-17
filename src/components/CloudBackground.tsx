@@ -57,15 +57,15 @@ const CloudBackground: React.FC<CloudBackgroundProps> = ({ className = '' }) => 
       
       {/* Decorative clouds with slower animation */}
       <div className="cloud w-32 h-20 top-[10%] left-[5%] animate-float-cloud" 
-           style={{animationDuration: '15s', animationDelay: '0s'}}></div>
+           style={{animationDuration: '20s', animationDelay: '0s'}}></div>
       <div className="cloud w-40 h-24 top-[15%] right-[10%] animate-float-cloud" 
-           style={{animationDuration: '18s', animationDelay: '1.5s'}}></div>
+           style={{animationDuration: '24s', animationDelay: '1.5s'}}></div>
       <div className="cloud w-28 h-16 bottom-[30%] left-[15%] animate-float-cloud" 
-           style={{animationDuration: '20s', animationDelay: '3s'}}></div>
+           style={{animationDuration: '26s', animationDelay: '3s'}}></div>
       <div className="cloud w-36 h-20 bottom-[20%] right-[20%] animate-float-cloud" 
-           style={{animationDuration: '22s', animationDelay: '4.5s'}}></div>
+           style={{animationDuration: '28s', animationDelay: '4.5s'}}></div>
       <div className="cloud w-24 h-14 top-[50%] left-[50%] animate-float-cloud" 
-           style={{animationDuration: '16s', animationDelay: '2s'}}></div>
+           style={{animationDuration: '22s', animationDelay: '2s'}}></div>
     </div>
   );
 };
