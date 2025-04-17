@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from '@/hooks/use-toast';
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,6 +19,7 @@ const Header = () => {
   const {
     toast
   } = useToast();
+
   const handleLogout = () => {
     logout();
     toast({
@@ -26,7 +28,9 @@ const Header = () => {
     });
     navigate('/');
   };
-  return <header className="w-full py-4 px-4 md:px-8 flex items-center justify-between bg-white/90 backdrop-blur-sm border-b border-border sticky top-0 z-50">
+
+  return (
+    <header className="w-full py-4 px-4 md:px-8 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-border shadow-sm">
       <Logo />
       
       <div className="hidden md:flex items-center gap-8">
@@ -144,6 +148,8 @@ const Header = () => {
           </SheetContent>
         </Sheet>
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
