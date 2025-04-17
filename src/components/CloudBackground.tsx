@@ -20,9 +20,9 @@ const CloudBackground: React.FC<CloudBackgroundProps> = ({ className = '' }) => 
         <div className="absolute inset-0 bg-repeat" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
       </div>
       
-      {/* Light particles floating */}
+      {/* Sparkles (Duolingo-style) floating particles */}
       <div className="particles-container absolute inset-0">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <div 
             key={i}
             className="absolute rounded-full bg-white opacity-70 animate-float"
@@ -33,6 +33,23 @@ const CloudBackground: React.FC<CloudBackgroundProps> = ({ className = '' }) => 
               top: `${Math.random() * 100}%`,
               animationDuration: `${Math.random() * 15 + 10}s`,
               animationDelay: `${Math.random() * 5}s`
+            }}
+          ></div>
+        ))}
+        
+        {/* Star-shaped particles (subtle) */}
+        {[...Array(8)].map((_, i) => (
+          <div 
+            key={`star-${i}`}
+            className="absolute bg-white opacity-50 animate-pulse-slow"
+            style={{
+              width: `${Math.random() * 8 + 5}px`,
+              height: `${Math.random() * 8 + 5}px`,
+              clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDuration: `${Math.random() * 4 + 2}s`,
+              animationDelay: `${Math.random() * 2}s`
             }}
           ></div>
         ))}
