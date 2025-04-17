@@ -1,9 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Sparkles, Heart, Headphones, RotateCw } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { Sparkles } from 'lucide-react';
 
 const affirmations = [
   "You're exactly where you need to be on your healing journey",
@@ -16,80 +14,25 @@ const affirmations = [
 ];
 
 const AffirmationCard = () => {
-  const { toast } = useToast();
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    const today = new Date().toDateString();
-    return today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % affirmations.length;
-  });
-
-  const handleSave = () => {
-    toast({
-      title: "Affirmation Saved",
-      description: "Added to your collection",
-    });
-  };
-
-  const handleListen = () => {
-    const utterance = new SpeechSynthesisUtterance(affirmations[currentIndex]);
-    window.speechSynthesis.speak(utterance);
-  };
-
-  const handleNew = () => {
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * affirmations.length);
-    } while (newIndex === currentIndex);
-    setCurrentIndex(newIndex);
-  };
-
+  // Get a random affirmation but use the date as seed so it stays the same all day
+  const today = new Date().toDateString();
+  const index = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % affirmations.length;
+  
   return (
-    <Card className="bg-gradient-to-br from-[#F7F9FC] to-[#EBF2FF] border-none shadow-md mb-6 overflow-hidden relative">
+    <Card className="bg-gradient-to-br from-skyhug-50 to-white border-skyhug-100 mb-6">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Sparkles className="h-5 w-5 text-skyhug-500 animate-pulse-slow" />
+          <Sparkles className="h-5 w-5 text-skyhug-500" />
           Affirmation of the Day
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-5">
-        <p className="text-xl font-medium text-skyhug-700 leading-relaxed text-center italic mb-6">
-          {affirmations[currentIndex]}
+      <CardContent>
+        <p className="text-lg font-medium text-skyhug-700 leading-relaxed">
+          {affirmations[index]}
         </p>
-        
-        <div className="flex justify-center gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 hover:bg-white/50"
-            onClick={handleSave}
-          >
-            <Heart className="h-4 w-4" />
-            Save
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 hover:bg-white/50"
-            onClick={handleListen}
-          >
-            <Headphones className="h-4 w-4" />
-            Listen
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 hover:bg-white/50"
-            onClick={handleNew}
-          >
-            <RotateCw className="h-4 w-4" />
-            New One
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
 };
 
 export default AffirmationCard;
-
