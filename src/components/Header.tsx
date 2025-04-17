@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import Logo from './Logo';
@@ -31,50 +32,41 @@ const Header = () => {
   const calmPoints = 720;
 
   return (
-    <header className="w-full py-4 px-6 md:px-8 flex items-center justify-between bg-white/70 backdrop-blur-md sticky top-0 z-50 border-b border-[#EFF3F6] shadow-[0_2px_6px_rgba(0,0,0,0.05)]">
+    <header className="w-full py-4 px-4 md:px-8 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-border shadow-sm">
       <Logo />
       
       <div className="hidden md:flex items-center gap-8">
         <nav className="flex items-center gap-6">
-          {isAuthenticated && (
-            <button 
-              onClick={() => navigate('/home')} 
-              className={`transition-all font-medium px-4 py-2 rounded-full ${
-                location.pathname === '/home' 
-                  ? 'bg-skyhug-50 text-skyhug-500' 
-                  : 'text-foreground hover:bg-[#F2F6FF] hover:text-skyhug-500'
-              }`}
-            >
+          {isAuthenticated && <button onClick={() => navigate('/home')} className={`transition-colors ${location.pathname === '/home' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}>
               Dashboard
-            </button>
-          )}
-          <Button 
+            </button>}
+          <button 
             onClick={() => navigate('/session')} 
-            className="bg-gradient-to-r from-[#B8C0FF] to-[#D9D4FF] text-white hover:shadow-lg transition-all rounded-full font-medium border-none"
+            className={`transition-colors ${location.pathname === '/session' ? 'text-skyhug-500' : 'text-foreground hover:text-skyhug-500'}`}
           >
-            💬 Start Session
-          </Button>
+            Start a Session
+          </button>
         </nav>
         
         {isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-full border-skyhug-200 gap-3 px-4 py-5 hover:bg-[#F2F6FF] transition-all group">
+              <Button variant="outline" className="rounded-full border-skyhug-200 gap-2">
                 <Avatar className="h-6 w-6">
                   <AvatarFallback className="bg-skyhug-100 text-skyhug-500 text-sm">
                     {user?.name?.[0] || 'U'}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium">{user?.name || 'User'}</span>
-                  <span className="text-xs text-skyhug-500 flex items-center gap-1 opacity-80">
+                <span className="text-sm font-medium flex items-center gap-2">
+                  {user?.name || 'User'}
+                  <span className="text-skyhug-500 flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
-                    {calmPoints} Calm Points
+                    {calmPoints}
                   </span>
-                </div>
+                </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2">
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem onClick={() => navigate('/profile')} className="cursor-pointer">
                 <User className="mr-2 h-4 w-4" />
                 <span>View Profile</span>
@@ -108,19 +100,11 @@ const Header = () => {
           </DropdownMenu>
         ) : (
           <div className="flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              className="text-foreground hover:text-skyhug-500 hover:bg-[#F2F6FF] font-medium" 
-              onClick={() => navigate('/login')}
-            >
+            <Button variant="ghost" className="text-foreground hover:text-skyhug-500 hover:bg-skyhug-50" onClick={() => navigate('/login')}>
               <LogIn className="mr-2 h-4 w-4" />
               Login
             </Button>
-            <Button 
-              variant="default" 
-              className="bg-skyhug-500 hover:bg-skyhug-600 text-white rounded-full font-medium" 
-              onClick={() => navigate('/signup')}
-            >
+            <Button variant="default" className="bg-skyhug-500 hover:bg-skyhug-600 text-white rounded-full" onClick={() => navigate('/signup')}>
               <UserPlus className="mr-2 h-4 w-4" />
               Sign Up
             </Button>
