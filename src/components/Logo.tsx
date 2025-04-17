@@ -1,28 +1,52 @@
 
 import React from 'react';
-import { Cloud, Sparkle } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 
 const Logo = () => {
   return (
     <div className="flex items-center gap-2 cursor-pointer group">
       <div className="relative">
-        {/* Main cloud container with hug-like curves */}
-        <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-skyhug-300 to-skyhug-600 flex items-center justify-center shadow-md before:content-[''] before:absolute before:w-9 before:h-7 before:border-t-[3px] before:border-skyhug-300/30 before:rounded-t-full before:-left-0.5 before:-top-1 after:content-[''] after:absolute after:w-9 after:h-7 after:border-t-[3px] after:border-skyhug-300/30 after:rounded-t-full after:-right-0.5 after:-top-1">
-          {/* Highlight effect */}
-          <div className="absolute w-3 h-3 bg-white rounded-full top-1.5 left-1.5 opacity-70"></div>
+        {/* Main cloud container with subtle glow */}
+        <div 
+          className="relative w-8 h-8 rounded-full bg-gradient-to-br from-[#BDE0FE] to-[#CDB4DB] flex items-center justify-center shadow-md"
+          style={{ boxShadow: '0 0 12px rgba(189, 224, 254, 0.25)' }}
+        >
+          {/* Soft inner glow */}
+          <div className="absolute inset-1 bg-white/20 rounded-full blur-sm"></div>
           
-          {/* Cloud icon */}
-          <Cloud className="h-5 w-5 text-white relative z-10" />
+          {/* Cloud icon with thinner stroke */}
+          <Cloud 
+            className="h-5 w-5 text-white relative z-10" 
+            strokeWidth={1.5}
+            strokeLinecap="round"
+          />
           
-          {/* Sparkle animation */}
-          <div className="absolute top-1 right-1 transition-opacity animate-pulse-slow">
-            <Sparkle className="h-3 w-3 text-white opacity-80" />
+          {/* Refined sparkle with thin stroke */}
+          <div className="absolute top-0.5 right-0.5 transition-all animate-pulse-slow">
+            <svg 
+              width="10" 
+              height="10" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              className="text-white opacity-90"
+              style={{ filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))' }}
+            >
+              <path 
+                d="M12 3L13.4328 9.23607L19.0622 6.93782L15.2639 12L19.0622 17.0622L13.4328 14.7639L12 21L10.5672 14.7639L4.93782 17.0622L8.73607 12L4.93782 6.93782L10.5672 9.23607L12 3Z" 
+                stroke="currentColor" 
+                strokeWidth="1" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
         </div>
       </div>
       
-      {/* Updated typography */}
-      <span className="font-['Plus_Jakarta_Sans'] font-semibold text-xl text-foreground tracking-tight group-hover:text-skyhug-500 transition-colors">
+      {/* Refined typography */}
+      <span 
+        className="font-['Plus_Jakarta_Sans'] font-medium text-xl text-foreground tracking-[0.5px] group-hover:text-[#BDE0FE] transition-colors"
+      >
         skyhug
       </span>
     </div>
