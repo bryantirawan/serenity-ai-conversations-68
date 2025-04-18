@@ -15,7 +15,8 @@ const ChatPage = () => {
     isProcessing,
     sendMessage,
     sendAudioMessage,
-    clearMessages
+    clearMessages,
+    endConversation
   } = useTherapist();
 
   const { patientReady } = useAuth();
@@ -50,20 +51,21 @@ const ChatPage = () => {
           <div className="max-w-5xl w-full mx-auto flex-grow flex flex-col">
             <div className="p-4 flex justify-end">
               <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
-                onClick={() => {
-                  if (canStartChat) {
-                    clearMessages();
-                  } else {
-                    console.warn("⏳ Patient row not ready yet...");
-                  }
-                }}
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Start New Chat
-              </Button>
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={async () => {
+                if (canStartChat) {
+                  await endConversation();
+                  clearMessages();
+                } else {
+                  console.warn("⏳ Patient row not ready yet...");
+                }
+              }}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Start New Chat
+            </Button>
             </div>
             
             <div className="flex-grow overflow-y-auto px-4 md:px-8 py-4">

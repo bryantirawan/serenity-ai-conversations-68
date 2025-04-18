@@ -20,7 +20,8 @@ const SessionRoom = () => {
     sendMessage,
     isProcessing,
     clearMessages,
-    setVoiceEnabled
+    setVoiceEnabled,
+    endConversation
   } = useTherapist();
 
   const [isVoiceMode, setIsVoiceMode] = useState(true);
@@ -38,15 +39,16 @@ const SessionRoom = () => {
     }
   };
 
-  const handleEndSession = () => {
+  const handleEndSession = async () => {
     toast({
       title: 'Session ended',
       description: 'Thank you for sharing today. Take care!',
       duration: 3000
     });
-    clearMessages();
+    await endConversation();
     navigate('/home');
   };
+  
 
   useEffect(() => {
     const id = setInterval(() => setSessionTime((t) => t + 1), 1000);

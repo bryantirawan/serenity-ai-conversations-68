@@ -62,20 +62,42 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
       console.warn('⏳ Waiting for user to be ready...');
       return;
     }
-
-    // Inline check for patient existence
-    const { data: existingPatient, error: checkError } = await supabase
+  
+    // 1. Check for existing conversation
+    const { data: existing, error: findError } = await supabase
+      .from('conversations')
+      .select('id')
+      .eq('patient_id', user.id)
+      .eq('ended', false)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+  
+    if (findError && findError.code !== 'PGRST116') {
+      console.error('❌ Error checking for existing conversation:', findError);
+      return;
+    }
+  
+    if (existing) {
+      console.log('🔁 Resuming previous conversation:', existing.id);
+      setConversationId(existing.id);
+      await loadHistory(existing.id);
+      return;
+    }
+  
+    // 2. Ensure patient row exists
+    const { data: patientExists, error: checkError } = await supabase
       .from('patients')
       .select('id')
       .eq('id', user.id)
       .single();
-
+  
     if (checkError && checkError.code !== 'PGRST116') {
       console.error('❌ Error checking patient:', checkError);
       return;
     }
-
-    if (!existingPatient) {
+  
+    if (!patientExists) {
       const { error: insertError } = await supabase
         .from('patients')
         .insert({ id: user.id, full_name: user.name });
@@ -84,45 +106,24 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
         return;
       }
     }
-
-    // 🟣 Resume existing unended conversation if it exists
-    const { data: existingConv } = await supabase
-      .from('conversations')
-      .select('id')
-      .eq('patient_id', user.id)
-      .eq('ended', false)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (existingConv?.id) {
-      console.log('🔄 Resuming previous conversation:', existingConv.id);
-      setConversationId(existingConv.id);
-      await loadHistory(existingConv.id);
-      return;
-    }
-
-    // 🔴 End all previous conversations before starting a new one
-    await supabase
-      .from('conversations')
-      .update({ ended: true })
-      .eq('patient_id', user.id);
-
+  
+    // 3. Create a new conversation
     console.log('🟡 Creating new conversation...');
     const { data, error } = await supabase
       .from('conversations')
       .insert({ patient_id: user.id, title: 'Therapy Session', ended: false })
       .select()
       .single();
+  
     if (error || !data) {
       console.error('❌ Supabase error creating conversation:', error);
       return;
     }
-
+  
     console.log('✅ New conversation ID:', data.id);
     setConversationId(data.id);
     setMessages([]);
-
+  
     await supabase.from('messages').insert({
       conversation_id: data.id,
       sender_role: 'assistant',
@@ -130,10 +131,10 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
       ai_status: 'done',
       tts_status: 'pending'
     });
-
+  
     await loadHistory(data.id);
   };
-
+  
   const clearMessages = createConversation;
 
   const sendMessage = async (content: string) => {
@@ -193,6 +194,16 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
     if (error) console.error('Error updating voice_enabled:', error);
   };
 
+  const endConversation = async () => {
+    if (!conversationId) return;
+    const { error } = await supabase
+      .from('conversations')
+      .update({ ended: true })
+      .eq('id', conversationId);
+    if (error) console.error('❌ Error ending conversation:', error);
+  };
+  
+
   useEffect(() => {
     if (!conversationId) return;
     const channel = supabase
@@ -227,7 +238,8 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
         sendMessage,
         sendAudioMessage,
         clearMessages,
-        setVoiceEnabled
+        setVoiceEnabled,
+        endConversation
       }}
     >
       {children}
@@ -242,3 +254,5 @@ export const useTherapist = (): TherapistContextType => {
   }
   return context;
 };
+
+
