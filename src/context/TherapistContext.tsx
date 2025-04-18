@@ -26,14 +26,10 @@ interface TherapistContextType {
   setVoiceEnabled: (on: boolean) => Promise<void>;
 }
 
-const TherapistContext = createContext<TherapistContextType | undefined>(
-  undefined
-);
+const TherapistContext = createContext<TherapistContextType | undefined>(undefined);
 
-export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
-  const { user, patientReady } = useAuth();
+export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -48,7 +44,6 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
     })
   });
 
-  // Load full history for a conversation
   const loadHistory = async (convId: string) => {
     const { data: rows, error } = await supabase
       .from('messages')
@@ -62,12 +57,34 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
     setMessages(rows.map(formatMessage));
   };
 
-  // Create or restart a conversation
   const createConversation = async () => {
-    if (!user || !patientReady) {
-      console.warn('⏳ Waiting for patient to be ready...');
+    if (!user) {
+      console.warn('⏳ Waiting for user to be ready...');
       return;
     }
+
+    // Inline check for patient existence
+    const { data: existingPatient, error: checkError } = await supabase
+      .from('patients')
+      .select('id')
+      .eq('id', user.id)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('❌ Error checking patient:', checkError);
+      return;
+    }
+
+    if (!existingPatient) {
+      const { error: insertError } = await supabase
+        .from('patients')
+        .insert({ id: user.id, full_name: user.name });
+      if (insertError) {
+        console.error('❌ Error inserting patient:', insertError);
+        return;
+      }
+    }
+
     console.log('🟡 Creating new conversation...');
     const { data, error } = await supabase
       .from('conversations')
@@ -78,9 +95,19 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
       console.error('❌ Supabase error creating conversation:', error);
       return;
     }
+
     console.log('✅ New conversation ID:', data.id);
     setConversationId(data.id);
     setMessages([]);
+
+    await supabase.from('messages').insert({
+      conversation_id: data.id,
+      sender_role: 'assistant',
+      assistant_text: "Hi there, I'm Sky. How are you feeling today?",
+      ai_status: 'done',
+      tts_status: 'pending'
+    });
+
     await loadHistory(data.id);
   };
 
@@ -90,6 +117,7 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
     if (!conversationId || !content.trim()) return;
     console.log('📤 Sending message to Supabase...');
     setIsProcessing(true);
+
     const { error } = await supabase.from('messages').insert({
       conversation_id: conversationId,
       sender_role: 'user',
@@ -98,6 +126,7 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
       ai_status: 'pending',
       tts_status: 'pending'
     });
+
     if (error) console.error('Error sending message:', error);
     await loadHistory(conversationId);
     setIsProcessing(false);
@@ -107,14 +136,17 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
     if (!conversationId || !user) return;
     setIsProcessing(true);
     const key = `${user.id}/${uuidv4()}.webm`;
+
     const { error: uploadError } = await supabase.storage
       .from('raw-audio')
       .upload(key, blob, { contentType: 'audio/webm' });
+
     if (uploadError) {
       console.error('Error uploading audio:', uploadError);
       setIsProcessing(false);
       return;
     }
+
     const { error: insertError } = await supabase.from('messages').insert({
       conversation_id: conversationId,
       sender_role: 'user',
@@ -123,6 +155,7 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
       ai_status: 'pending',
       tts_status: 'pending'
     });
+
     if (insertError) console.error('Error inserting audio message:', insertError);
     await loadHistory(conversationId);
     setIsProcessing(false);
@@ -132,7 +165,7 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
     if (!conversationId) return;
     const { error } = await supabase
       .from('conversations')
-      .update({ voice_enabled: on }) // ensure you’ve added this column in your DB
+      .update({ voice_enabled: on })
       .eq('id', conversationId);
     if (error) console.error('Error updating voice_enabled:', error);
   };
