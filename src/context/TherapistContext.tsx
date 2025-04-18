@@ -85,10 +85,33 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
       }
     }
 
+    // 🟣 Resume existing unended conversation if it exists
+    const { data: existingConv } = await supabase
+      .from('conversations')
+      .select('id')
+      .eq('patient_id', user.id)
+      .eq('ended', false)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existingConv?.id) {
+      console.log('🔄 Resuming previous conversation:', existingConv.id);
+      setConversationId(existingConv.id);
+      await loadHistory(existingConv.id);
+      return;
+    }
+
+    // 🔴 End all previous conversations before starting a new one
+    await supabase
+      .from('conversations')
+      .update({ ended: true })
+      .eq('patient_id', user.id);
+
     console.log('🟡 Creating new conversation...');
     const { data, error } = await supabase
       .from('conversations')
-      .insert({ patient_id: user.id, title: 'Therapy Session' })
+      .insert({ patient_id: user.id, title: 'Therapy Session', ended: false })
       .select()
       .single();
     if (error || !data) {
