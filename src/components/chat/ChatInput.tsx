@@ -1,18 +1,17 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Mic, Send } from 'lucide-react';
 
 type ChatInputProps = {
   onSendMessage: (message: string) => void;
-  onStartVoice?: () => void;
+  onStartVoice?: (blob: Blob) => void;
   isVoiceEnabled?: boolean;
 };
 
-const ChatInput: React.FC<ChatInputProps> = ({ 
-  onSendMessage, 
-  onStartVoice, 
-  isVoiceEnabled = false 
+const ChatInput: React.FC<ChatInputProps> = ({
+  onSendMessage,
+  onStartVoice,
+  isVoiceEnabled = false
 }) => {
   const [message, setMessage] = useState('');
 
@@ -24,8 +23,33 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
+  // Voice recording logic
+  const startRecording = async () => {
+    if (!onStartVoice) return;
+    try {
+      const media = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(media);
+      const chunks: BlobPart[] = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        onStartVoice(blob);
+      };
+
+      recorder.start();
+      // Stop after 5 seconds (or you could tie this to a UI button)
+      setTimeout(() => recorder.stop(), 5000);
+    } catch (err) {
+      console.error('Microphone access error:', err);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-border p-4 bg-white/50 backdrop-blur-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-2 border-t border-border p-4 bg-white/50 backdrop-blur-sm"
+    >
       <div className="relative flex-grow">
         <input
           type="text"
@@ -42,7 +66,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           variant="outline"
           size="icon"
           className="rounded-full"
-          onClick={onStartVoice}
+          onClick={startRecording}
         >
           <Mic className="h-5 w-5 text-serenity-500" />
         </Button>

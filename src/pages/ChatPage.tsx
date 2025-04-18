@@ -1,25 +1,36 @@
-
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/chat/ChatBubble';
 import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import { useTherapist } from '@/context/TherapistContext';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
 
 const ChatPage = () => {
-  const { messages, isProcessing, sendMessage, clearMessages } = useTherapist();
+  const {
+    messages,
+    isProcessing,
+    sendMessage,
+    sendAudioMessage,
+    clearMessages
+  } = useTherapist();
+
+  const { patientReady } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [canStartChat, setCanStartChat] = useState(false);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isProcessing]);
+    if (patientReady) {
+      setCanStartChat(true);
+    }
+  }, [patientReady]);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, [messages, isProcessing]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -38,11 +49,17 @@ const ChatPage = () => {
         <div className="flex-grow flex flex-col bg-gradient-to-b from-white to-serenity-50">
           <div className="max-w-5xl w-full mx-auto flex-grow flex flex-col">
             <div className="p-4 flex justify-end">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="text-muted-foreground hover:text-foreground"
-                onClick={clearMessages}
+                onClick={() => {
+                  if (canStartChat) {
+                    clearMessages();
+                  } else {
+                    console.warn("⏳ Patient row not ready yet...");
+                  }
+                }}
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Start New Chat
@@ -64,7 +81,11 @@ const ChatPage = () => {
               </div>
             </div>
             
-            <ChatInput onSendMessage={sendMessage} isVoiceEnabled={true} />
+            <ChatInput
+              onSendMessage={sendMessage}
+              onStartVoice={sendAudioMessage}
+              isVoiceEnabled={true}
+            />
           </div>
         </div>
       </main>

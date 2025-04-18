@@ -1,7 +1,8 @@
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from './AuthContext';
+import { v4 as uuidv4 } from 'uuid';
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-
-// Message interface
 export interface Message {
   id: string;
   content: string;
@@ -9,86 +10,135 @@ export interface Message {
   timestamp: string;
 }
 
-// Context interface
 interface TherapistContextType {
   messages: Message[];
   isProcessing: boolean;
   sendMessage: (message: string) => void;
+  sendAudioMessage: (blob: Blob) => void;
   clearMessages: () => void;
 }
 
-// Create context
 const TherapistContext = createContext<TherapistContextType | undefined>(undefined);
 
-// Simple AI responses
-const aiResponses = [
-  "It sounds like you're going through a lot right now. Can you tell me more about how that makes you feel?",
-  "I appreciate you sharing that with me. What thoughts come up for you when you experience this?",
-  "That's completely understandable. Many people feel that way in similar situations. How long have you been feeling like this?",
-  "I'm hearing that this has been challenging for you. What would help you feel better right now?",
-  "Sometimes we need to acknowledge our emotions before we can process them. Would it help to explore why you might be feeling this way?",
-  "Your feelings are valid. Have you tried any coping strategies that have helped in the past?",
-  "That's a thoughtful perspective. How do you think this relates to other areas of your life?",
-  "It takes courage to discuss these thoughts. Is there a particular aspect of this situation that concerns you most?",
-  "I'm here to support you. What would be a small step you could take toward addressing this?",
-  "Thank you for trusting me with this. Let's think about how we might approach this together.",
-];
-
-// Provider component
 export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: "Hello, I'm Sky, your AI therapist. How are you feeling today?", // Changed from Serenity
-      isUser: false,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    },
-  ]);
+  const { user, patientReady } = useAuth();
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Send message function
-  const sendMessage = (content: string) => {
-    if (!content.trim()) return;
+  const formatMessage = (msg: any): Message => ({
+    id: msg.id,
+    content: msg.transcription || '[No content]',
+    isUser: msg.sender_role === 'user',
+    timestamp: new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  });
 
-    // Add user message
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content,
-      isUser: true,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
+  const createConversation = async () => {
+    console.log("👤 user:", user);
+    console.log("🧠 patientReady:", patientReady);
 
-    setMessages((prev) => [...prev, userMessage]);
+    if (!user || !patientReady) {
+      console.warn("⏳ Waiting for patient to be ready...");
+      return;
+    }
+
+    console.log("🟡 Creating new conversation...");
+
+    const { data, error, status } = await supabase
+      .from('conversations')
+      .insert({ patient_id: user.id, title: 'Therapy Session' })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("❌ Supabase error inserting conversation:", error);
+      return;
+    }
+
+    if (!data) {
+      console.error("❌ No conversation returned and no error");
+      return;
+    }
+
+    console.log("✅ New conversation ID:", data.id);
+    setConversationId(data.id);
+    setMessages([]); // Clear previous messages on new session
+  };
+
+  const clearMessages = createConversation;
+
+  const sendMessage = async (content: string) => {
+    if (!conversationId || !content.trim()) return;
+    console.log("📤 Sending message to Supabase...");
+
     setIsProcessing(true);
 
-    // Simulate AI response with a delay
-    setTimeout(() => {
-      // Choose a random response
-      const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-      
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: randomResponse,
-        isUser: false,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
+    const { error } = await supabase.from('messages').insert({
+      conversation_id: conversationId,
+      sender_role: 'user',
+      transcription: content,
+      transcription_status: 'done',
+      ai_status: 'pending',
+      tts_status: 'pending'
+    });
 
-      setMessages((prev) => [...prev, aiMessage]);
+    if (error) console.error('Error sending message:', error);
+    setIsProcessing(false);
+  };
+
+  const sendAudioMessage = async (blob: Blob) => {
+    if (!conversationId || !user) return;
+    setIsProcessing(true);
+
+    const key = `${user.id}/${uuidv4()}.webm`;
+    const { error: uploadError } = await supabase.storage
+      .from('raw-audio')
+      .upload(key, blob, { contentType: 'audio/webm' });
+
+    if (uploadError) {
+      console.error('Error uploading audio:', uploadError);
       setIsProcessing(false);
-    }, 1500);
+      return;
+    }
+
+    const { error: insertError } = await supabase.from('messages').insert({
+      conversation_id: conversationId,
+      sender_role: 'user',
+      audio_path: key,
+      transcription_status: 'pending',
+      ai_status: 'pending',
+      tts_status: 'pending'
+    });
+
+    if (insertError) console.error('Error inserting audio message:', insertError);
+    setIsProcessing(false);
   };
 
-  // Clear messages function
-  const clearMessages = () => {
-    setMessages([
-      {
-        id: '1',
-        content: "Hello, I'm Sky, your AI therapist. How are you feeling today?", // Changed from Serenity
-        isUser: false,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      },
-    ]);
-  };
+  useEffect(() => {
+    if (!conversationId) return;
+
+    const channel = supabase
+      .channel('messages-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `conversation_id=eq.${conversationId}`,
+        },
+        (payload) => {
+          const newMessage = payload.new;
+          console.log("📥 New message received:", newMessage);
+          setMessages((prev) => [...prev, formatMessage(newMessage)]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [conversationId]);
 
   return (
     <TherapistContext.Provider
@@ -96,7 +146,8 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
         messages,
         isProcessing,
         sendMessage,
-        clearMessages,
+        sendAudioMessage,
+        clearMessages
       }}
     >
       {children}
@@ -104,7 +155,6 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
   );
 };
 
-// Custom hook to use the context
 export const useTherapist = (): TherapistContextType => {
   const context = useContext(TherapistContext);
   if (context === undefined) {
@@ -112,4 +162,3 @@ export const useTherapist = (): TherapistContextType => {
   }
   return context;
 };
-
