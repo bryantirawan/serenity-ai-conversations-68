@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode
+} from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,16 +17,22 @@ export interface Message {
 }
 
 interface TherapistContextType {
+  conversationId: string | null;
   messages: Message[];
   isProcessing: boolean;
-  sendMessage: (message: string) => void;
-  sendAudioMessage: (blob: Blob) => void;
-  clearMessages: () => void;
+  sendMessage: (message: string) => Promise<void>;
+  sendAudioMessage: (blob: Blob) => Promise<void>;
+  clearMessages: () => Promise<void>;
+  setVoiceEnabled: (on: boolean) => Promise<void>;
 }
 
-const TherapistContext = createContext<TherapistContextType | undefined>(undefined);
+const TherapistContext = createContext<TherapistContextType | undefined>(
+  undefined
+);
 
-export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const TherapistProvider: React.FC<{ children: ReactNode }> = ({
+  children
+}) => {
   const { user, patientReady } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -30,7 +42,10 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
     id: msg.id,
     content: msg.transcription ?? msg.assistant_text ?? '[No content]',
     isUser: msg.sender_role === 'user',
-    timestamp: new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
   });
 
   // Load full history for a conversation
@@ -66,7 +81,6 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
     console.log('✅ New conversation ID:', data.id);
     setConversationId(data.id);
     setMessages([]);
-    // Load initial history (e.g., welcome message)
     await loadHistory(data.id);
   };
 
@@ -76,18 +90,15 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
     if (!conversationId || !content.trim()) return;
     console.log('📤 Sending message to Supabase...');
     setIsProcessing(true);
-    const { error } = await supabase
-      .from('messages')
-      .insert({
-        conversation_id: conversationId,
-        sender_role: 'user',
-        transcription: content,
-        transcription_status: 'done',
-        ai_status: 'pending',
-        tts_status: 'pending'
-      });
+    const { error } = await supabase.from('messages').insert({
+      conversation_id: conversationId,
+      sender_role: 'user',
+      transcription: content,
+      transcription_status: 'done',
+      ai_status: 'pending',
+      tts_status: 'pending'
+    });
     if (error) console.error('Error sending message:', error);
-    // reload history so UI shows your message immediately
     await loadHistory(conversationId);
     setIsProcessing(false);
   };
@@ -104,22 +115,28 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
       setIsProcessing(false);
       return;
     }
-    const { error: insertError } = await supabase
-      .from('messages')
-      .insert({
-        conversation_id: conversationId,
-        sender_role: 'user',
-        audio_path: key,
-        transcription_status: 'pending',
-        ai_status: 'pending',
-        tts_status: 'pending'
-      });
+    const { error: insertError } = await supabase.from('messages').insert({
+      conversation_id: conversationId,
+      sender_role: 'user',
+      audio_path: key,
+      transcription_status: 'pending',
+      ai_status: 'pending',
+      tts_status: 'pending'
+    });
     if (insertError) console.error('Error inserting audio message:', insertError);
-    await loadHistory(conversationId!);
+    await loadHistory(conversationId);
     setIsProcessing(false);
   };
 
-  // Subscribe to new assistant messages in real-time
+  const setVoiceEnabled = async (on: boolean) => {
+    if (!conversationId) return;
+    const { error } = await supabase
+      .from('conversations')
+      .update({ voice_enabled: on }) // ensure you’ve added this column in your DB
+      .eq('id', conversationId);
+    if (error) console.error('Error updating voice_enabled:', error);
+  };
+
   useEffect(() => {
     if (!conversationId) return;
     const channel = supabase
@@ -134,7 +151,6 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
         },
         (payload) => {
           const msg = payload.new;
-          // only show assistant messages here (user reload handled above)
           if (msg.sender_role === 'assistant') {
             setMessages((prev) => [...prev, formatMessage(msg)]);
           }
@@ -149,11 +165,13 @@ export const TherapistProvider: React.FC<{ children: ReactNode }> = ({ children 
   return (
     <TherapistContext.Provider
       value={{
+        conversationId,
         messages,
         isProcessing,
         sendMessage,
         sendAudioMessage,
-        clearMessages
+        clearMessages,
+        setVoiceEnabled
       }}
     >
       {children}
